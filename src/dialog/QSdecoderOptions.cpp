@@ -87,8 +87,6 @@ void TQSdecoderOptionsPage::translate(void)
     static const char_t* mtEnableNames[] = {
         _l("Disable multithreading (low power)"),
         _l("Multithreaded copy"),
-        _l("Async post process"),
-        _l("Best performance (more power)"),
         NULL
     };
 
