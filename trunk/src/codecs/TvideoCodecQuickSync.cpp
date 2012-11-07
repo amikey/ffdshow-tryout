@@ -117,15 +117,9 @@ bool TvideoCodecQuickSync::beginDecompress(TffPictBase &pict, FOURCC infcc, cons
 
     // Multithreading
     cfg.bEnableMultithreading = false;
-    cfg.bEnableMtDecode       = false;
-    cfg.bEnableMtProcessing   = false;
     cfg.bEnableMtCopy         = false;
 
     switch (deci->getParam2(IDFF_QS_ENABLE_MT)) {
-    case 3:
-        cfg.bEnableMtDecode       = true;
-    case 2:
-        cfg.bEnableMtProcessing   = true;
     case 1:
         cfg.bEnableMtCopy         = true;
         cfg.bEnableMultithreading = true;
