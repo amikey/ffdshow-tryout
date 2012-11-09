@@ -41,39 +41,16 @@ TrenderedSubtitleWordBase::~TrenderedSubtitleWordBase()
 //============================== TrenderedSubtitleLine::TprintPrefs ===============================
 TprintPrefs::TprintPrefs(IffdshowBase *Ideci, const TfontSettings *IfontSettings)
 {
-    memset(this, 0, sizeof(this)); // This doesn't seem to help after optimization.
-    dx = dy = 0;
-    isOSD = false;
-    xpos = ypos = 0;
-    align = 0;
-    linespacing = 0;
-    sizeDx = 0;
-    sizeDy = 0;
+    memset(this, 0, sizeof(*this));
     if (IfontSettings) {
         fontSettings = *IfontSettings;
     }
     deci = Ideci;
-    config = NULL;
-    stereoScopicParallax = 0;
-    vobchangeposition = false;
-    subimgscale = vobaamode = vobaagauss = 0;
-    OSDitemSplit = 0;
-    textMarginLR = 0;
     tabsize = 8;
-    dvd = false;
     shadowMode = TfontSettings::ClassicShadow;
-    shadowSize = csp = 0;
-    outlineWidth = 0;
     blurStrength = TfontSettings::Softest;
-    outlineBlur = false;
-    clipdy = 0;
     sar = Rational(1, 1);
-    opaqueBox = false;
-    italic = 0;
-    underline = 0;
     subformat = -1;
-    xinput = 0;
-    yinput = 0;
     rtStart = REFTIME_INVALID;
     yuvcolor = YUVcolorA(fontSettings.color, fontSettings.bodyAlpha);
     outlineYUV = YUVcolorA(fontSettings.outlineColor, fontSettings.outlineAlpha);
