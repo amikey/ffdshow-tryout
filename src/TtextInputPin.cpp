@@ -49,14 +49,15 @@ TtextInputPin::~TtextInputPin()
 
 HRESULT TtextInputPin::CheckMediaType(const CMediaType *mtIn)
 {
-    /* Return S_OK (accept the subtitles connection) if embedded subtitles are enabled (IDFF_subTextpin)
-       and if the given subtitles format is enabled
-       (IDFF_subText for text, IDFF_subVobsub for VobSub subs, IDFF_subSSA for SSA subs, IDFF_subPGS for Blu-ray subs)
-    */
-    if (filter->getParam2(IDFF_subTextpin) == 0 && mtIn->majortype != MEDIATYPE_DVD_ENCRYPTED_PACK) {
-        return VFW_E_TYPE_NOT_ACCEPTED;
-    } else {
-        if (mtIn->majortype == MEDIATYPE_Subtitle) {
+    /* Return S_OK (accept the subtitles connection) if:
+     * 1) embedded subtitles are enabled (IDFF_subTextpin) and the given subtitles format is enabled
+     *    (IDFF_subText for text, IDFF_subVobsub for VobSub subs, IDFF_subSSA for SSA subs, IDFF_subPGS for Blu-ray subs)
+     * 2) subtitles are DVD subpictures
+     *
+     * FIXME: accept subtitle pin connection only when ffdshow is decoding/processing video
+     */
+    if (mtIn->majortype == MEDIATYPE_Subtitle) {
+        if (filter->getParam2(IDFF_subTextpin)) {
             if ((mtIn->subtype == MEDIASUBTYPE_SSA || mtIn->subtype == MEDIASUBTYPE_ASS || mtIn->subtype == MEDIASUBTYPE_ASS2) && (filter->getParam2(IDFF_subSSA) == 1)) {
                 return S_OK;    // SSA/ASS/ASS2 subtitles
             } else if (mtIn->subtype == MEDIASUBTYPE_UTF8 && (filter->getParam2(IDFF_subText) == 1)) {
@@ -69,18 +70,21 @@ HRESULT TtextInputPin::CheckMediaType(const CMediaType *mtIn)
                 return S_OK;    // VobSub subtitles
             } else if (mtIn->subtype == MEDIASUBTYPE_USF) {
                 return S_OK;    // USF subtitles
-            } else {
-                return VFW_E_TYPE_NOT_ACCEPTED;
             }
-        } else if (mtIn->majortype == MEDIATYPE_Text && (filter->getParam2(IDFF_subText) == 1)) {
+        }
+    } else if (mtIn->majortype == MEDIATYPE_Text) {
+        if (filter->getParam2(IDFF_subTextpin) && filter->getParam2(IDFF_subText)) {
             return S_OK;    // Plain text subtitles
-        } else if ((mtIn->majortype == MEDIATYPE_DVD_ENCRYPTED_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PES || mtIn->majortype == MEDIATYPE_Video || mtIn->majortype == MEDIATYPE_Stream)
-                   && (mtIn->subtype == MEDIASUBTYPE_DVD_SUBPICTURE || mtIn->subtype == MEDIASUBTYPE_CVD_SUBPICTURE || mtIn->subtype == MEDIASUBTYPE_SVCD_SUBPICTURE)) {
-            return S_OK;    // DVD, CVD, SVCD subtitles
-        } else {
-            return VFW_E_TYPE_NOT_ACCEPTED;
+        }  
+    } else if ((mtIn->majortype == MEDIATYPE_DVD_ENCRYPTED_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PES || mtIn->majortype == MEDIATYPE_Video || mtIn->majortype == MEDIATYPE_Stream)
+               && (mtIn->subtype == MEDIASUBTYPE_DVD_SUBPICTURE || mtIn->subtype == MEDIASUBTYPE_CVD_SUBPICTURE || mtIn->subtype == MEDIASUBTYPE_SVCD_SUBPICTURE)) {
+        // DVD, CVD, SVCD subtitles
+        // accept only if mpeg-2 or uncompressed is enabled
+        if (filter->getParam2(IDFF_rawv) || filter->getParam2(IDFF_mpg2) && filter->getParam2(IDFF_supDVDdec)) {
+            return S_OK;
         }
     }
+    return VFW_E_TYPE_NOT_ACCEPTED;
 }
 
 HRESULT TtextInputPin::SetMediaType(const CMediaType* mtIn)
