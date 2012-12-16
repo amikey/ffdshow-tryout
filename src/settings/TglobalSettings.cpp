@@ -1129,7 +1129,7 @@ TglobalSettingsDecAudio::TglobalSettingsDecAudio(const Tconfig *Iconfig, int Imo
         IDFF_alwaysextensible       , &TglobalSettingsDecAudio::alwaysextensible       , 0, 0             , _l(""), 0,
         _l("alwaysextensible"), 1,
         IDFF_allowOutStream         , &TglobalSettingsDecAudio::allowOutStream         , 0, 0             , _l(""), 0,
-        _l("allowOutStream"), 1,
+        _l("allowOutStream"), 0,
         IDFF_dtsinwav               , &TglobalSettingsDecAudio::dtsinwav               , 0, 0             , _l(""), 0,
         _l("dtsinwav"), 1,
         0
