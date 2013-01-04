@@ -585,6 +585,14 @@ Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueNa
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "1";                  Components: ffdshow; Tasks: whitelist AND     whitelist\prompt
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow; Tasks: whitelist AND NOT whitelist\prompt
 
+; VFW settings
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP210";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP216";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outY416";              ValueData: "0";                  Components: ffdshow\vfw;
+
 ; DXVA registration flag
 Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "0";                  Components: ffdshow\dxva
 Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "1";                  Components: NOT ffdshow\dxva
@@ -593,10 +601,7 @@ Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueNa
 Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
 Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isBlacklist";          ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
 Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: string;  ValueName: "Whitelist";           ValueData: "bsplayer.exe;coreplayer.exe;ehshell.exe;gom.exe;graphedit.exe;graphedt.exe;graphstudio.exe;graphstudio64.exe;kmplayer.exe;mpc-hc.exe;mpc-hc64.exe;mplayerc.exe;wmplayer.exe;zplayer.exe;";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
-
-; Fix invalid codec settings
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "needCodecFix";         ValueData: "1";                  Components: ffdshow;                                   Check: IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: string;  ValueName: "Whitelist";           ValueData: "bsplayer.exe;coreplayer.exe;ehshell.exe;gom.exe;graphedit.exe;graphedt.exe;graphstudio.exe;graphstudio64.exe;graphstudionext.exe;graphstudionext64.exe;kmplayer.exe;mpc-hc.exe;mpc-hc64.exe;mplayerc.exe;wmplayer.exe;zplayer.exe;"; Components: ffdshow\dxva; Flags: createvalueifdoesntexist
 
 ; Registry keys for the audio/video formats:
 #include "reg_formats.iss"
