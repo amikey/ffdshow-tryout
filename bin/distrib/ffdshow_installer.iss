@@ -586,12 +586,12 @@ Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueNa
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow; Tasks: whitelist AND NOT whitelist\prompt
 
 ; VFW settings
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP210";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outP216";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";           ValueType: dword;  ValueName: "outY416";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP210";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP216";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outY416";              ValueData: "0";                  Components: ffdshow\vfw;
 
 ; DXVA registration flag
 Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "0";                  Components: ffdshow\dxva
@@ -606,26 +606,10 @@ Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: string;  ValueN
 ; Registry keys for the audio/video formats:
 #include "reg_formats.iss"
 
-; Audio pass-through upgrade path:
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "1";                  Components: ffdshow; Tasks:     filter\passthroughac3
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\passthroughac3; Check: NOT IsUpdate
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "1";                  Components: ffdshow; Tasks:     filter\passthroughdts
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\passthroughdts; Check: NOT IsUpdate
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\";                           ValueName: "ac3SPDIF";                                              Components: ffdshow;     Flags: deletevalue
-
-; DRC upgrade path:
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "decoderDRC";           ValueData: "1";                  Components: ffdshow;                                   Check:     GetDecoderDRC
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "decoderDRC";           ValueData: "0";                  Components: ffdshow;                                   Check: NOT GetDecoderDRC
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\";                           ValueName: "ac3DRC";                                                Components: ffdshow;     Flags: deletevalue
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\";                           ValueName: "dtsDRC";                                                Components: ffdshow;     Flags: deletevalue
-
-; OSD upgrade path:
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isOSD";                ValueData: "1";                  Components: ffdshow;                                   Check:     GetDefaultPresetIsOSD
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isOSD";                ValueData: "0";                  Components: ffdshow;                                   Check: NOT GetDefaultPresetIsOSD
-Root: HKCU; Subkey: "{#= ff_reg_base}\";                                 ValueName: "isOSD";                                                 Components: ffdshow;     Flags: deletevalue
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "isOSD";                ValueData: "1";                  Components: ffdshow;                                   Check:     GetDefaultAudioPresetIsOSD
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "isOSD";                ValueData: "0";                  Components: ffdshow;                                   Check: NOT GetDefaultAudioPresetIsOSD
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\";                           ValueName: "isOSD";                                                 Components: ffdshow;     Flags: deletevalue
 
 [Run]
 Description: "{cm:run_audioConfig}";     Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: "{app}";       Components: ffdshow;     Flags: postinstall nowait unchecked
@@ -643,229 +627,6 @@ var
   reg_ismixer: Cardinal;
   SpeakerPage: TInputOptionWizardPage;
   is8DisableMixer: Boolean;
-
-
-function CheckTaskAudio(name: String; value: Integer; showbydefault: Boolean): Boolean;
-var
-  regval: Cardinal;
-begin
-  Result := False;
-  if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio', name, regval) then begin
-    Result := (regval = value);
-  end
-  else begin
-    if RegQueryDwordValue(HKLM, '{#= ff_reg_base}_audio', name, regval) then begin
-      Result := (regval = value);
-    end
-    else begin
-      Result := showbydefault;
-    end
-  end
-end;
-
-function CheckTaskAudioInpreset(name: String; value: Integer; showbydefault: Boolean): Boolean;
-var
-  regval: Cardinal;
-begin
-  Result := False;
-  if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\default', name, regval) then
-    Result := (regval = value)
-  else
-    Result := showbydefault;
-end;
-
-function GetTaskVolNormalize(): Boolean;
-begin
-  Result := False;
-  if CheckTaskAudioInpreset('isvolume', 1, False) then
-    if CheckTaskAudioInpreset('volNormalize', 1, False) then
-     Result := True;
-end;
-
-function GetTaskPassthroughAC3(): Boolean;
-var
-  regval: Cardinal;
-  presetList: TArrayOfString;
-  index: Integer;
-begin
-  Result := False;
-  if CheckTaskAudioInpreset('passthroughAC3', 1, False) then
-    begin
-      Result := True;
-    end;
-  if CheckTaskAudio('ac3', 16, False) then
-    begin
-      Result := True;
-    end;
-  if RegGetSubkeyNames(HKCU, '{#= ff_reg_base}_audio\', presetList) then
-    begin
-      for index := 0 to GetArrayLength(presetList)-1 do
-        begin
-          if (presetList[index] <> 'default') then
-            begin
-              if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'outsfs', regval) then
-                begin
-                  // the second condition equals (regval & 16 > 0)
-                  if (Result) OR (CheckTaskAudio('ac3SPDIF', 1, False) AND (((regval / 16) MOD 2) = 1)) then
-                    begin
-                      RegWriteDWordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'passthroughAC3', 1)
-                    end
-                end
-            end
-        end
-    end;
-  if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\default', 'outsfs', regval) then
-  begin
-    // the second condition equals (regval & 16 > 0)
-    if CheckTaskAudio('ac3SPDIF', 1, False) AND (((regval / 16) MOD 2) = 1) then
-      begin
-        Result := True;
-      end
-  end
-end;
-
-function GetTaskPassthroughDTS(): Boolean;
-var
-  regval: Cardinal;
-  presetList: TArrayOfString;
-  index: Integer;
-begin
-  Result := False;
-  if CheckTaskAudioInpreset('passthroughDTS', 1, False) then
-    begin
-      Result := True;
-    end;
-  if CheckTaskAudio('dts', 16, False) then
-    begin
-      Result := True;
-    end;
-  if RegGetSubkeyNames(HKCU, '{#= ff_reg_base}_audio\', presetList) then
-    begin
-      for index := 0 to GetArrayLength(presetList)-1 do
-        begin
-          if (presetList[index] <> 'default') then
-            begin
-              if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'outsfs', regval) then
-                begin
-                  // the second condition equals (regval & 16 > 0)
-                  if (Result) OR (CheckTaskAudio('ac3SPDIF', 1, False) AND (((regval / 16) MOD 2) = 1)) then
-                    begin
-                      RegWriteDWordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'passthroughDTS', 1)
-                    end
-                end
-            end
-        end
-    end;
-  if RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\default', 'outsfs', regval) then
-  begin
-    // the second condition equals (regval & 16 > 0)
-    if CheckTaskAudio('ac3SPDIF', 1, False) AND (((regval / 16) MOD 2) = 1) then
-      begin
-        Result := True;
-      end
-  end
-end;
-
-function GetDecoderDRC(): Boolean;
-var
-  presetList: TArrayOfString;
-  index: Integer;
-begin
-  Result := False;
-  if CheckTaskAudio('ac3DRC', 1, False) then
-    begin
-      Result := True;
-    end;
-  if CheckTaskAudio('dtsDRC', 1, False) then
-    begin
-      Result := True;
-    end;
-if (Result) then
-  begin
-    if RegGetSubkeyNames(HKCU, '{#= ff_reg_base}_audio\', presetList) then
-      begin
-        for index := 0 to GetArrayLength(presetList)-1 do
-          begin
-            if (presetList[index] <> 'default') then
-              begin
-                RegWriteDWordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'decoderDRC', 1)
-              end
-          end
-      end
-  end;
-  if CheckTaskAudioInpreset('decoderDRC', 1, False) then
-    begin
-      Result := True;
-    end;
-end;
-
-function GetDefaultPresetIsOSD(): Boolean;
-var
-  regval: Cardinal;
-  presetList: TArrayOfString;
-  index: Integer;
-begin
-  Result := False;
-  if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}', 'isOSD', regval)) then
-    begin
-      Result := True;
-    end;
-  if (Result) then
-    begin
-      if RegGetSubkeyNames(HKCU, '{#= ff_reg_base}\', presetList) then
-        begin
-          for index := 0 to GetArrayLength(presetList)-1 do
-            begin
-              if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}\' + presetList[index], 'orderGrab', regval)) then
-                begin
-                  RegWriteDWordValue(HKCU, '{#= ff_reg_base}\' + presetList[index], 'orderOSD', regval + 1)
-                end;
-            end
-        end
-    end;
-  Result := False;
-  if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}\default', 'isOSD', regval)) then
-    begin
-      if (regval = 1) then
-        begin
-          Result := True;
-        end;
-    end;
-end;
-
-function GetDefaultAudioPresetIsOSD(): Boolean;
-var
-  regval: Cardinal;
-  presetList: TArrayOfString;
-  index: Integer;
-begin
-  Result := False;
-  if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio', 'isOSD', regval)) then
-    begin
-      Result := True;
-    end;
-  if (Result) then
-    begin
-      if RegGetSubkeyNames(HKCU, '{#= ff_reg_base}_audio\', presetList) then
-        begin
-          for index := 0 to GetArrayLength(presetList)-1 do
-            begin
-              if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'orderMixer', regval)) then
-                begin
-                  RegWriteDWordValue(HKCU, '{#= ff_reg_base}_audio\' + presetList[index], 'orderOSD', regval + 1)
-                end;
-            end
-        end
-    end;
-  Result := False;
-  if (RegQueryDwordValue(HKCU, '{#= ff_reg_base}_audio\default', 'isOSD', regval)) then
-    begin
-      if (regval = 1) then
-        begin
-          Result := True;
-        end;
-    end;
-end;
 
 #if include_plugin_avisynth
 var
