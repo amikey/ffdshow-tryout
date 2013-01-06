@@ -11,7 +11,7 @@
 #define dummy Exec("update_version.bat","","",1,SW_HIDE)
 
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 2
+#define VERSION_MINOR 3
 #include "..\..\src\svn_version.h"
 
 
@@ -275,7 +275,7 @@ Name: "Normal"; Description: "Normal"; Flags: iscustom
 [Components]
 Name: "ffdshow";                    Description: "{cm:comp_ffdshowds}";    Types: Normal; Flags: fixed
 Name: "ffdshow\dxva";               Description: "{cm:comp_dxvaDecoder}"
-Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal
+Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal; Check: NOT IsWindows8OrAbove;
 #if include_makeavis
 Name: "ffdshow\makeavis";           Description: "{cm:comp_makeAvis}";     Flags: dontinheritcheck
 #endif
@@ -586,6 +586,7 @@ Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueNa
 Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow; Tasks: whitelist AND NOT whitelist\prompt
 
 ; VFW settings
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "needOutcspsFix";       ValueData: "0";                  Components: ffdshow\vfw;
 Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: ffdshow\vfw;
 Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: ffdshow\vfw;
 Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: ffdshow\vfw;
@@ -627,6 +628,11 @@ var
   reg_ismixer: Cardinal;
   SpeakerPage: TInputOptionWizardPage;
   is8DisableMixer: Boolean;
+
+function IsWindows8OrAbove(): Boolean;
+begin
+	Result := GetWindowsVersion >= $06020000;
+end;
 
 #if include_plugin_avisynth
 var

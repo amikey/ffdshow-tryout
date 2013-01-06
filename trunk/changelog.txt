@@ -1,3 +1,32 @@
+Changelog for version 1.3.4500
+
+Bugfixes:
+* Fixed crash with AC3 encoding
+* Fixed bug that caused ffdshow to connect its subtitle pin even when subtitles were disabled
+* Removed support for raw NV12 input. It caused crashes with resize enabled.
+* SPP deblocking: fixed crash when the video has an unsupported format.
+
+Changes:
+* Now useslibavcodec by default for AC3 decoding
+* Disabled "Allow direct-to-file output" by default. It causes playback problems in WMP12 in some situations.
+* Embedded subtitle support is now enabled by default.
+* Re-added VobSub support. Labeled it as "incomplete" because of the known bugs.
+* Removed makeAVIs from 64-bit build. It caused crashes on Windows 8.
+* Hide VFW option in 64-bit build on Windows 8. It causes crashes.
+* Updated blacklist and whitelist
+* Optimization of SPP deblocking by use of multi-threading and SSSE3
+* Improved auto post-processing
+* Removed real time subtitle text correction feature
+* Removed libmpeg2
+
+Updates:
+* IntelQuickSync r77
+* Boost v1.51
+* Unrar v4.20
+* zlib v1.2.7
+* Some libavcodec updates
+
+
 Changelog for version 1.2.4422
 
 Bugfixes:
