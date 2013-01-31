@@ -31,6 +31,7 @@ protected:
     virtual bool onSeek(REFERENCE_TIME segmentStart);
     HRESULT DeliverSurface(QsFrameData* frameData);
     static HRESULT DeliverSurfaceCallback(void* obj, QsFrameData* frameData);
+    void SetConfigFromSettings();
 
     // C function pointers (factory functions)
     IQuickSyncDecoder* (__stdcall *createQuickSync)();

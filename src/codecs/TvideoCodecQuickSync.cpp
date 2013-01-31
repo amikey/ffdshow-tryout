@@ -101,24 +101,31 @@ TvideoCodecQuickSync::~TvideoCodecQuickSync()
 
 const char_t* TvideoCodecQuickSync::getName(void) const
 {
-    return _l("Intel\xae QuickSync");
+    if (!ok)
+        return _l("Intel\xae QuickSync");
+
+    const char* name = m_QuickSync->GetCodecName();
+    static char_t s_uname[256];
+
+#ifdef UNICODE
+    wsprintf(s_uname, _l("%hs - %s"),
+        name,
+        (m_QuickSync->IsHwAccelerated()) ?  _l("HW") : _l("SW"));
+    return s_uname;
+#else
+    return name;
+#endif
 }
 
-bool TvideoCodecQuickSync::beginDecompress(TffPictBase &pict, FOURCC infcc, const CMediaType &mt, int sourceFlags)
+void TvideoCodecQuickSync::SetConfigFromSettings()
 {
-    if (!ok) { return false; }
-
-    CAutoLock lock(&m_csLock);
     CQsConfig cfg;
     m_QuickSync->GetConfig(&cfg);
 
     // force ffdshow defaults/options
-    cfg.bTimeStampCorrection          = deci->getParam2(IDFF_QS_ENABLE_TS_CORR) != 0;
+    cfg.bTimeStampCorrection = deci->getParam2(IDFF_QS_ENABLE_TS_CORR) != 0;
 
     // Multithreading
-    cfg.bEnableMultithreading = false;
-    cfg.bEnableMtCopy         = false;
-
     switch (deci->getParam2(IDFF_QS_ENABLE_MT)) {
     case 1:
         cfg.bEnableMtCopy         = true;
@@ -126,6 +133,8 @@ bool TvideoCodecQuickSync::beginDecompress(TffPictBase &pict, FOURCC infcc, cons
         break;
     case 0: // disabled
     default:
+        cfg.bEnableMultithreading = false;
+        cfg.bEnableMtCopy         = false;
         break;
     }
 
@@ -147,6 +156,15 @@ bool TvideoCodecQuickSync::beginDecompress(TffPictBase &pict, FOURCC infcc, cons
     cfg.bEnableVideoProcessing = (cfg.nVppDenoiseStrength || cfg.nVppDetailStrength || cfg.bVppEnableDeinterlacing);
 
     m_QuickSync->SetConfig(&cfg);
+}
+
+bool TvideoCodecQuickSync::beginDecompress(TffPictBase &pict, FOURCC infcc, const CMediaType &mt, int sourceFlags)
+{
+    if (!ok) { return false; }
+
+    CAutoLock lock(&m_csLock);
+
+    SetConfigFromSettings();
 
     // Init decoder
     HRESULT hr = m_QuickSync->InitDecoder(&mt, infcc);
@@ -291,6 +309,9 @@ HRESULT TvideoCodecQuickSync::onEndOfStream()
 bool TvideoCodecQuickSync::testMediaType(FOURCC fcc, const CMediaType &mt)
 {
     if (!ok) { return false; }
+
+    CAutoLock lock(&m_csLock);
+    SetConfigFromSettings();
     return S_OK == m_QuickSync->TestMediaType(&mt, fcc);
 }
 
