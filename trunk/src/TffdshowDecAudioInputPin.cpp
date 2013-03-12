@@ -248,8 +248,8 @@ STDMETHODIMP TffdshowDecAudioInputPin::Receive(IMediaSample* pIn)
 
     if (SUCCEEDED(hr)) {
         REFERENCE_TIME j = filter->m_rtStartDec - rtStart;
-        jitter = int(j);
-        if ((uint64_t)ff_abs(j) > 100 * (REF_SECOND_MULT / 1000) // +-100ms jitter is allowed for now
+        jitter = int(j / (REF_SECOND_MULT / 1000));
+        if (ff_abs(jitter) > 180 // 180ms jitter is allowed for now
                 && codecId != AV_CODEC_ID_FLAC
                 && codecId != AV_CODEC_ID_TTA
                 && codecId != AV_CODEC_ID_WAVPACK
@@ -258,7 +258,7 @@ STDMETHODIMP TffdshowDecAudioInputPin::Receive(IMediaSample* pIn)
                 && codecId != AV_CODEC_ID_COOK
                 && !bitstream_codec(codecId)
                 && filter->getParam2(IDFF_audio_decoder_JitterCorrection)) {
-            DPRINTF(_l("jitter correction"));
+            DPRINTF(_l("jitter correction (%d ms)"), jitter );
             buf.clear();
             newSrcBuffer.clear();
             filter->m_rtStartDec = filter->m_rtStartProc = rtStart;
@@ -490,7 +490,7 @@ STDMETHODIMP_(bool) TffdshowDecAudioInputPin::getsf(TsampleFormat &outsf)
 int TffdshowDecAudioInputPin::getJitter(void) const
 {
     if (codecId != AV_CODEC_ID_FLAC && codecId != AV_CODEC_ID_TTA && codecId != AV_CODEC_ID_WAVPACK) {
-        return jitter / int(REF_SECOND_MULT / 1000);
+        return jitter;
     } else {
         return 0;
     }
