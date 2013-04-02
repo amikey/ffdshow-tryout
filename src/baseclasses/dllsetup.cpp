@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "IffdshowDecVideo.h"
+#include "IffdshowDecAudio.h"
 #include "reg.h"
 
 //---------------------------------------------------------------------------
@@ -119,10 +120,9 @@ DWORD GetDWORDValue( HKEY hkey, LPTSTR strKey, LPTSTR strValueName, DWORD defaul
   return result;
 }
 
-int IsRegisterDxva()
+BOOL SkipFilterRegistration(LPTSTR valuename)
 {
- DWORD noDxvaDecoder = GetDWORDValue( HKEY_LOCAL_MACHINE, FFDSHOW_REG_PARENT _l("\\") FFDSHOW, _l("noDxvaDecoder"), 0);
- return !noDxvaDecoder;
+  return GetDWORDValue(HKEY_LOCAL_MACHINE, FFDSHOW_REG_PARENT _l("\\") FFDSHOW, valuename, 0) == 1;
 }
 
 //---------------------------------------------------------------------------
@@ -341,7 +341,14 @@ STDAPI
 RegisterAllServers( LPCWSTR szFileName, BOOL bRegister )
 {
   HRESULT hr = NOERROR;
-  int isRegisterDxva = IsRegisterDxva();
+
+  BOOL noDxvaDecoder  = bRegister && SkipFilterRegistration(_l("noDxvaDecoder"));
+  BOOL noVideoDecoder = bRegister && SkipFilterRegistration(_l("noVideoDecoder"));
+  BOOL noVideoProc    = bRegister && SkipFilterRegistration(_l("noVideoProc"));
+  BOOL noAudioDecoder = bRegister && SkipFilterRegistration(_l("noAudioDecoder"));
+  BOOL noAudioProc    = bRegister && SkipFilterRegistration(_l("noAudioProc"));
+  BOOL noVFW          = bRegister && SkipFilterRegistration(_l("noVFW"));
+  BOOL noSubFilter    = bRegister && SkipFilterRegistration(_l("noSubFilter"));
 
   for( int i = 0; i < g_cTemplates; i++ )
   {
@@ -349,8 +356,22 @@ RegisterAllServers( LPCWSTR szFileName, BOOL bRegister )
     //
     const CFactoryTemplate *pT = &g_Templates[i];
 
-    if ((*(pT->m_ClsID) == CLSID_FFDSHOWDXVA || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA) && !isRegisterDxva)
-      continue;
+    if (bRegister) {
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWDXVA      || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA)      && noDxvaDecoder)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOW          || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGE)          && noVideoDecoder)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWRAW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEPROC)      && noVideoProc)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIO     || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIOPAGE)     && noAudioDecoder)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIORAW  || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIORAWPAGE)  && noAudioProc)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWVFW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEVFW)       && noVFW)
+        continue;
+      if ( (*(pT->m_ClsID) == CLSID_FFDSHOWSUBTITLES || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGESUBTITLES) && noSubFilter)
+        continue;
+    }
 
     DbgLog((LOG_TRACE, 2, TEXT("- - register %ls"),
            (LPCWSTR)pT->m_Name ));
@@ -486,15 +507,37 @@ AMovieDllRegisterServer2( BOOL bRegister )
       // registering servers and filters.
       //
       DbgLog((LOG_TRACE, 2, TEXT("- register Filters")));
-      int isRegisterDxva = IsRegisterDxva();
+
+      BOOL noDxvaDecoder  = bRegister && SkipFilterRegistration(_l("noDxvaDecoder"));
+      BOOL noVideoDecoder = bRegister && SkipFilterRegistration(_l("noVideoDecoder"));
+      BOOL noVideoProc    = bRegister && SkipFilterRegistration(_l("noVideoProc"));
+      BOOL noAudioDecoder = bRegister && SkipFilterRegistration(_l("noAudioDecoder"));
+      BOOL noAudioProc    = bRegister && SkipFilterRegistration(_l("noAudioProc"));
+      BOOL noVFW          = bRegister && SkipFilterRegistration(_l("noVFW"));
+      BOOL noSubFilter    = bRegister && SkipFilterRegistration(_l("noSubFilter"));
+
       for( int i = 0; i < g_cTemplates; i++ )
       {
         // get i'th template
         //
         const CFactoryTemplate *pT = &g_Templates[i];
 
-        if ((*(pT->m_ClsID) == CLSID_FFDSHOWDXVA || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA) && !isRegisterDxva)
-          continue;
+        if (bRegister) {
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWDXVA      || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA)      && noDxvaDecoder)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOW          || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGE)          && noVideoDecoder)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWRAW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEPROC)      && noVideoProc)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIO     || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIOPAGE)     && noAudioDecoder)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIORAW  || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIORAWPAGE)  && noAudioProc)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWVFW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEVFW)       && noVFW)
+            continue;
+          if ( (*(pT->m_ClsID) == CLSID_FFDSHOWSUBTITLES || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGESUBTITLES) && noSubFilter)
+            continue;
+        }
 
         if( NULL != pT->m_pAMovieSetup_Filter )
         {
@@ -597,7 +640,14 @@ AMovieDllRegisterServer( void )
                        , NUMELMS(achFileName) );
   }
 
-  int isRegisterDxva = IsRegisterDxva();
+  BOOL noDxvaDecoder  = SkipFilterRegistration(_l("noDxvaDecoder"));
+  BOOL noVideoDecoder = SkipFilterRegistration(_l("noVideoDecoder"));
+  BOOL noVideoProc    = SkipFilterRegistration(_l("noVideoProc"));
+  BOOL noAudioDecoder = SkipFilterRegistration(_l("noAudioDecoder"));
+  BOOL noAudioProc    = SkipFilterRegistration(_l("noAudioProc"));
+  BOOL noVFW          = SkipFilterRegistration(_l("noVFW"));
+  BOOL noSubFilter    = SkipFilterRegistration(_l("noSubFilter"));
+
   // scan through array of CFactoryTemplates
   // registering servers and filters.
   //
@@ -607,7 +657,19 @@ AMovieDllRegisterServer( void )
     //
     const CFactoryTemplate *pT = &g_Templates[i];
 
-    if ((*(pT->m_ClsID) == CLSID_FFDSHOWDXVA || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA) && !isRegisterDxva)
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWDXVA      || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEDXVA)      && noDxvaDecoder)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOW          || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGE)          && noVideoDecoder)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWRAW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEPROC)      && noVideoProc)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIO     || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIOPAGE)     && noAudioDecoder)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWAUDIORAW  || *(pT->m_ClsID) == CLSID_TFFDSHOWAUDIORAWPAGE)  && noAudioProc)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWVFW       || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGEVFW)       && noVFW)
+      continue;
+    if ( (*(pT->m_ClsID) == CLSID_FFDSHOWSUBTITLES || *(pT->m_ClsID) == CLSID_TFFDSHOWPAGESUBTITLES) && noSubFilter)
       continue;
 
     // register CLSID and InprocServer32
