@@ -1070,7 +1070,9 @@ HRESULT TffdshowDecVideo::Receive(IMediaSample *pSample)
     if (m_dirtyStop) {
         m_dirtyStop = false;
         inpin->onSeek(0);
-        imgFilters->onSeek();
+        if (imgFilters) {
+          imgFilters->onSeek();
+        }
     }
 
     long srcLength;
