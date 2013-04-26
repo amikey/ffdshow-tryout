@@ -275,7 +275,11 @@ Name: "Normal"; Description: "Normal"; Flags: iscustom
 [Components]
 Name: "ffdshow";                    Description: "{cm:comp_ffdshowds}";    Types: Normal; Flags: fixed
 Name: "ffdshow\dxva";               Description: "{cm:comp_dxvaDecoder}"
-Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal; Check: NOT IsWindows8OrAbove;
+#if is64bit
+Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal; OnlyBelowVersion: 6.2;
+#else
+Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;
+#endif
 #if include_makeavis
 Name: "ffdshow\makeavis";           Description: "{cm:comp_makeAvis}";     Flags: dontinheritcheck
 #endif
@@ -307,10 +311,10 @@ Name: "video\flv";               Description: "FLV1, FLV4";                     
 Name: "video\vp6";               Description: "VP6";                              Components: ffdshow
 Name: "video\h263";              Description: "H.263(+)";                         Components: ffdshow
 Name: "video\mpeg1";             Description: "MPEG-1";                           Components: ffdshow; Flags: unchecked dontinheritcheck
-;Name: "video\mpeg1\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
-;Name: "video\mpeg1\libavcodec";  Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
+Name: "video\mpeg1\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
+Name: "video\mpeg1\libavcodec";  Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
 Name: "video\mpeg2";             Description: "MPEG-2";                           Components: ffdshow; Flags: unchecked
-;Name: "video\mpeg2\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
+Name: "video\mpeg2\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
 Name: "video\mpeg2\libavcodec";  Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
 #if include_quicksync
 Name: "video\mpeg2\quicksync";   Description: "Intel QuickSync";                  Components: ffdshow; Flags: unchecked exclusive;        Check: IsQSCapableIntelCPU; MinVersion: 6.0;
@@ -417,7 +421,7 @@ Source: "{#= bindir}\xvidcore.dll";               DestDir: "{app}";             
 #endif
 Source: "{#= bindir}\ff_kernelDeint.dll";         DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion; Check: Is_SSE_Supported;
 Source: "{#= bindir}\TomsMoComp_ff.dll";          DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-;Source: "{#= bindir}\libmpeg2_ff.dll";            DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\libmpeg2_ff.dll";            DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete
 
 #ifdef PREF_CLSID_ICL
 Source: "{#= bindir}\ffdshow_icl.ax";             DestDir: "{app}"; DestName: "ffdshow.ax"; Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete regserver noregerror
@@ -598,6 +602,9 @@ Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueNa
 Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "0";                  Components: ffdshow\dxva
 Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "1";                  Components: NOT ffdshow\dxva
 
+; Remove DXVA decoder if unchecked
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{0B0EFF97-C750-462C-9488-B10E7D87F1A6}; Flags: deletekey; Components: NOT ffdshow\dxva
+
 ; DXVA Compatibility list
 Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
 Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isBlacklist";          ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
@@ -628,11 +635,6 @@ var
   reg_ismixer: Cardinal;
   SpeakerPage: TInputOptionWizardPage;
   is8DisableMixer: Boolean;
-
-function IsWindows8OrAbove(): Boolean;
-begin
-	Result := GetWindowsVersion >= $06020000;
-end;
 
 #if include_plugin_avisynth
 var
