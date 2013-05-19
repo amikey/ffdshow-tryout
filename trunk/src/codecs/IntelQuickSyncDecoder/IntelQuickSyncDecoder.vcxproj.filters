@@ -71,6 +71,18 @@
     <ClInclude Include="src\QuickSyncVPP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\d3d11_allocator.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d11_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hw_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\QuickSyncExports.cpp">
@@ -109,12 +121,19 @@
     <ClCompile Include="src\QuickSyncVPP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\d3d11_allocator.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d11_device.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d_device.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\IntelQuickSyncDecoder.def">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="src\license.txt" />
+    <None Include="src\IntelQuickSyncDecoder.def" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="src\IntelQuickSyncDecoder.rc">
