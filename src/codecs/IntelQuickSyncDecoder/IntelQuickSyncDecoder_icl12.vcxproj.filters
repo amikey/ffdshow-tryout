@@ -10,19 +10,16 @@
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{c2fb2f3d-4d05-41db-8525-3f1ac60ca224}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utility">
-      <UniqueIdentifier>{6e0619ab-b718-41dc-bfff-986ac17387e1}</UniqueIdentifier>
+      <UniqueIdentifier>{72d0b727-3294-44aa-9d82-62b45ffad724}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utility">
-      <UniqueIdentifier>{d8549e03-9dec-4d52-8b56-66b58b2657a4}</UniqueIdentifier>
+      <UniqueIdentifier>{db3d63f1-bcc7-45a4-a77e-c82371e4a86b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Allocators">
-      <UniqueIdentifier>{4e7d4866-bcf1-4eeb-971d-69bf120ce96b}</UniqueIdentifier>
+      <UniqueIdentifier>{c57451da-9975-423e-9e1e-c8667c98c3a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Allocators">
-      <UniqueIdentifier>{c7c9f55a-75d3-4e5b-8b6f-7e7e0b63bff4}</UniqueIdentifier>
+      <UniqueIdentifier>{f1fdd9a0-ea0d-4419-b2d6-4fa904080c16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Utility">
       <UniqueIdentifier>{d85caa20-ea42-474b-a316-3d0324321b2c}</UniqueIdentifier>
@@ -74,6 +71,18 @@
     <ClInclude Include="src\QuickSyncVPP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\d3d11_allocator.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d11_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hw_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\d3d_device.h">
+      <Filter>Header Files\Allocators</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\QuickSyncExports.cpp">
@@ -100,9 +109,6 @@
     <ClCompile Include="src\QuickSyncUtils.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\QuickSyncVPP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\base_alllocator.cpp">
       <Filter>Source Files\Allocators</Filter>
     </ClCompile>
@@ -110,6 +116,18 @@
       <Filter>Source Files\Allocators</Filter>
     </ClCompile>
     <ClCompile Include="src\sysmem_allocator.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QuickSyncVPP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d11_allocator.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d11_device.cpp">
+      <Filter>Source Files\Allocators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\d3d_device.cpp">
       <Filter>Source Files\Allocators</Filter>
     </ClCompile>
   </ItemGroup>

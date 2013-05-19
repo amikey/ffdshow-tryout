@@ -42,15 +42,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>Intel C++ Compiler 12.1</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -74,19 +74,21 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>src\MSDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>src\MSDK\lib\$(PlatformName);$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>src\MSDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>src\MSDK\lib\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>src\MSDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>src\MSDK\lib\$(PlatformName);$(LibraryPath)</LibraryPath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>src\MSDK\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>src\MSDK\lib\$(PlatformName);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -96,12 +98,16 @@
       <PreprocessorDefinitions>WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;QUICKSYNC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4995</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Include;$(INTELMEDIASDK_WINSDK_PATH)\Include\um;$(INTELMEDIASDK_WINSDK_PATH)\Include\shared;src\MSDK\include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>src\IntelQuickSyncDecoder.def</ModuleDefinitionFile>
-      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Lib;$(INTELMEDIASDK_WINSDK_PATH)\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -111,15 +117,23 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;DEBUG;_DEBUG;_WINDOWS;_USRDLL;QUICKSYNC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4995</DisableSpecificWarnings>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>false</MinimalRebuild>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AdditionalIncludeDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Include;$(INTELMEDIASDK_WINSDK_PATH)\Include\um;$(INTELMEDIASDK_WINSDK_PATH)\Include\shared;src\MSDK\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>src\IntelQuickSyncDecoder.def</ModuleDefinitionFile>
-      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Lib\x64;$(INTELMEDIASDK_WINSDK_PATH)\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -130,11 +144,24 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QUICKSYNC_EXPORTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4995</DisableSpecificWarnings>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Include;$(INTELMEDIASDK_WINSDK_PATH)\Include\um;$(INTELMEDIASDK_WINSDK_PATH)\Include\shared;src\MSDK\include</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>src\IntelQuickSyncDecoder.def</ModuleDefinitionFile>
-      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Lib;$(INTELMEDIASDK_WINSDK_PATH)\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -145,11 +172,15 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QUICKSYNC_EXPORTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4996;4995</DisableSpecificWarnings>
+      <WarningLevel>Level4</WarningLevel>
+      <AdditionalIncludeDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Include;$(INTELMEDIASDK_WINSDK_PATH)\Include\um;$(INTELMEDIASDK_WINSDK_PATH)\Include\shared;src\MSDK\include</AdditionalIncludeDirectories>
+      <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <ModuleDefinitionFile>src\IntelQuickSyncDecoder.def</ModuleDefinitionFile>
-      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;uuid.lib;D3D9.lib;Dxva2.lib;libmfx.lib;strmiids.lib;d3d11.lib;dxgi.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(INTELMEDIASDK_WINSDK_PATH)\Lib\x64;$(INTELMEDIASDK_WINSDK_PATH)\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -162,7 +193,11 @@
   <ItemGroup>
     <ClInclude Include="src\base_allocator.h" />
     <ClInclude Include="src\CodecInfo.h" />
+    <ClInclude Include="src\d3d11_allocator.h" />
+    <ClInclude Include="src\d3d11_device.h" />
+    <ClInclude Include="src\d3d_device.h" />
     <ClInclude Include="src\H264Nalu.h" />
+    <ClInclude Include="src\hw_device.h" />
     <ClInclude Include="src\QuickSyncDecoder.h" />
     <ClInclude Include="src\d3d_allocator.h" />
     <ClInclude Include="src\IQuickSyncDecoder.h" />
@@ -178,6 +213,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\base_alllocator.cpp" />
+    <ClCompile Include="src\d3d11_allocator.cpp" />
+    <ClCompile Include="src\d3d11_device.cpp" />
+    <ClCompile Include="src\d3d_device.cpp" />
     <ClCompile Include="src\QuickSyncExports.cpp" />
     <ClCompile Include="src\H264Nalu.cpp" />
     <ClCompile Include="src\QuickSyncDecoder.cpp" />
