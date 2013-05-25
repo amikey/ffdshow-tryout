@@ -35,7 +35,6 @@ var
 procedure DetectCPU();
 var
   SysInfo: TSystemInfo;
-  qs_check: DWORD;
 begin
 	cpu_sse := IsProcessorFeaturePresent(6);
 	cpu_sse2 := IsProcessorFeaturePresent(10);
