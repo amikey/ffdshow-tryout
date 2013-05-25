@@ -108,9 +108,7 @@ const char_t* TvideoCodecQuickSync::getName(void) const
     static char_t s_uname[256];
 
 #ifdef UNICODE
-    wsprintf(s_uname, _l("%hs - %s"),
-        name,
-        (m_QuickSync->IsHwAccelerated()) ?  _l("HW") : _l("SW"));
+    wsprintf(s_uname, _l("%hs"), name);
     return s_uname;
 #else
     return name;
