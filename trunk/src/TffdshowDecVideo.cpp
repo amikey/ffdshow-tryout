@@ -1761,9 +1761,8 @@ HRESULT TffdshowDecVideo::EndOfStream(void)
     if (imgFilters) {
         imgFilters->onEndOfStream();
     }
-    if (CritCheckIn(&inpin->m_csCodecs_and_imgFilters)) {
-        CAutoUnlock unlock(&inpin->m_csCodecs_and_imgFilters);
-    }
+    ASSERT(CritCheckIn(&inpin->m_csCodecs_and_imgFilters));
+    CAutoUnlock unlock(&inpin->m_csCodecs_and_imgFilters);
     return TffdshowDec::EndOfStream();
 }
 
