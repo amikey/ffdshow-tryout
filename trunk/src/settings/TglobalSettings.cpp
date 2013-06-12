@@ -441,7 +441,7 @@ TglobalSettingsDecVideo::TglobalSettingsDecVideo(const Tconfig *Iconfig, int Imo
         IDFF_rawv           , &TglobalSettingsDecVideo::rawv           , 0, 0, _l(""), 0,
         NULL, 0,
         IDFF_supDVDdec      , &TglobalSettingsDecVideo::supdvddec      , 0, 0, _l(""), 0,
-        _l("supDVDdec"), 0,
+        _l("supDVDdec"), 1,
         IDFF_fastMpeg2      , &TglobalSettingsDecVideo::fastMpeg2      , 0, 0, _l(""), 1,
         _l("fastMpeg2"), 0,
         IDFF_fastH264       , &TglobalSettingsDecVideo::fastH264       , 0, 3, _l(""), 1,
