@@ -167,10 +167,12 @@ STDMETHODIMP TtextInputPin::ReceiveConnection(IPin* pConnector, const AM_MEDIA_T
     const CLSID &ref = GetCLSID(pConnector);
     ismatroska = false;
     if (searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_HaaliMediaSplitter)
-            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_MPC_MatroskaSplitter)
-            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_GabestMatroskaSplitter)
+            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_GabestMkvSplitterSrc)
+            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_GabestMkvSplitter)
             || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_LAVFSplitter)
-            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_LAVFSplitterSource)) {
+            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_LAVFSplitterSource)
+            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_AVSplitter)
+            || searchPrevNextFilter(PINDIR_INPUT, pConnector, CLSID_AVSplitterSource)) {
         ismatroska = true;
     }
 #if 0

@@ -530,7 +530,7 @@ HRESULT TffdshowDecAudioInputPin::CompleteConnect(IPin* pReceivePin)
         if (SUCCEEDED(pPin->QueryPinInfo(&pinInfo))) {
             CLSID clsid;
             if (pinInfo.pFilter && SUCCEEDED(pinInfo.pFilter->GetClassID(&clsid))) {
-                if (clsid == CLSID_AviSplitter || clsid == CLSID_MPC_OggSplitter || clsid == CLSID_MPC_AC3DTSSourceFilter) {
+                if (clsid == CLSID_AviSplitter || clsid == CLSID_GabestOggSplitterSrc || clsid == CLSID_GabestOggSplitter || clsid == CLSID_GabestAC3DTSSource) {
                     DPRINTF(_l("TffdshowDecAudioInputPin::CompleteConnect Use blocking mode on pin %u"), this);
                     m_useBlock = true;
                 }

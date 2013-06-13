@@ -108,9 +108,9 @@ public:
     bool isInterlacedRawVideo;
     IBaseFilter *pCompatibleFilter;
     enum {
-        MPC_matroska_splitter,
+        gabest_matroska_splitters,
         Haali_Media_splitter,
-        MPC_mpegSplitters,
+        gabest_mpeg_splitters,
         DVBSourceFilter,
         PBDA_DTFilter,
         NeuviewSource,

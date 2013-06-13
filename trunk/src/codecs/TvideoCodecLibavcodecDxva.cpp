@@ -158,7 +158,7 @@ bool TvideoCodecLibavcodecDxva::checkDXVAMode(IPin *pReceivePin)
             return true;
         }
 
-        if (connectedSplitter == TffdshowVideoInputPin::MPC_mpegSplitters) {
+        if (connectedSplitter == TffdshowVideoInputPin::gabest_mpeg_splitters) {
             bReorderBFrame = false;
         }
 
@@ -876,7 +876,7 @@ HRESULT TvideoCodecLibavcodecDxva::decompress(const unsigned char *src, size_t s
     avctx->reordered_opaque3 = srcLen0;
 
     if (avctx->sample_aspect_ratio.num
-            && !(connectedSplitter == TffdshowVideoInputPin::MPC_matroska_splitter && avctx->sample_aspect_ratio.num == 1 && avctx->sample_aspect_ratio.den == 1)
+            && !(connectedSplitter == TffdshowVideoInputPin::gabest_matroska_splitters && avctx->sample_aspect_ratio.num == 1 && avctx->sample_aspect_ratio.den == 1)
        ) { // With MPC's internal matroska splitter, AR is not reliable.
         sar = avctx->sample_aspect_ratio;
     } else {

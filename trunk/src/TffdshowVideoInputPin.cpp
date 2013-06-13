@@ -248,12 +248,12 @@ STDMETHODIMP TffdshowVideoInputPin::ReceiveConnection(IPin* pConnector, const AM
     DPRINTF(_l("TffdshowVideoInputPin::ReceiveConnection"));
     CAutoLock cObjectLock(m_pLock);
     const CLSID &ref = GetCLSID(pConnector);
-    if (ref == CLSID_MPC_MatroskaSplitter || ref == CLSID_GabestMatroskaSplitter) {
-        connectedSplitter = MPC_matroska_splitter;
+    if (ref == CLSID_GabestMkvSplitterSrc || ref == CLSID_GabestMkvSplitter) {
+        connectedSplitter = gabest_matroska_splitters;
     } else if (ref == CLSID_HaaliMediaSplitter) {
         connectedSplitter = Haali_Media_splitter;
-    } else if (ref == CLSID_MPC_MpegSourceFilter || ref == CLSID_MPC_MpegSplitterFilter) {
-        connectedSplitter = MPC_mpegSplitters;
+    } else if (ref == CLSID_GabestMpegSplitterSrc || ref == CLSID_GabestMpegSplitter) {
+        connectedSplitter = gabest_mpeg_splitters;
     } else if (ref == CLSID_DVBSourceFilter) {
         connectedSplitter = DVBSourceFilter;
     } else if (ref == CLSID_PBDA_DTFilter) {
