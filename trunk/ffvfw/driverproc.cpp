@@ -211,6 +211,7 @@ extern "C" void CALLBACK configureVFW(HWND hwnd, HINSTANCE hinst, LPTSTR lpCmdLi
     DriverProc(0, 0, DRV_LOAD, 0, 0);
     DWORD dwDriverId = (DWORD)DriverProc(0, 0, DRV_OPEN, 0, 0);
     if (dwDriverId) {
+        // FIXME: these two calls crash on Windows 8 x64
         DriverProc(dwDriverId, 0, ICM_CONFIGURE, 0, 0);
         DriverProc(dwDriverId, 0, DRV_CLOSE, 0, 0);
     }
