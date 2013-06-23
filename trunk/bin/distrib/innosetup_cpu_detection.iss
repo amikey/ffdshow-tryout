@@ -43,7 +43,7 @@ begin
 	cpu_level := SysInfo.wProcessorLevel;
 	
 	#if include_quicksync
-	cpu_intel_qs := (InstallOnThisVersion('0,6','0,0') = irInstall) AND (SysInfo.wProcessorArchitecture = 0) AND (cpu_level >= 6) AND (QuickSyncCheck > 0);
+	cpu_intel_qs := (QuickSyncCheck > 0);
 	#else
 	cpu_intel_qs := False;
 	#endif
