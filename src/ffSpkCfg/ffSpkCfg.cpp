@@ -72,7 +72,7 @@ DWORD __stdcall getQsCaps()
 {
     mfxVersion apiVersion = {1, 1};
     MFXVideoSession* pSession = new MFXVideoSession;
-    mfxIMPL impl = MFX_IMPL_AUTO_ANY;
+    mfxIMPL impl = MFX_IMPL_AUTO_ANY | MFX_IMPL_VIA_ANY;
     mfxStatus sts = pSession->Init(impl, &apiVersion);
     if (sts != MFX_ERR_NONE) { return QS_CAP_UNSUPPORTED; }
 
