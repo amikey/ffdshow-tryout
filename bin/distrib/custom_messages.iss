@@ -69,8 +69,12 @@ zh_Hant.FileAbortRetryIgnore=退出使用 ffdshow 的應用程式並點擊 Retry
 zh_Hant.FinishedRestartLabel=要完成 ffdshow 的安裝, 安裝程式必須重新啟動您的電腦. 您想要現在重新啟動嗎?%n%n提示: 為了避免下次重新啟動電腦, 可以於視訊解碼器組態內的 "DirectShow 控制" -> "不使用 ffdshow 於:" 中加入 "explorer.exe".
 zh_Hant.WinVersionTooLowError=此版的 ffdshow 需要 Windows XP SP2 或更新的版本.
 
+; Ukrainian
+uk.WelcomeLabel2=Програма встановить ffdshow на Ваш комп'ютер.%n%nРекомендується закрити усі інші додатки перед тим, як продовжити.
+uk.FileAbortRetryIgnore=Закрийте усі додатки, що використовують ffdshow, і натисніть "Повтор". Якщо ситуація повториться, натисніть "Скасувати", перезавантажте Ваш комп'ютер і спробуйте ще раз.
+uk.FinishedRestartLabel=Для завершення установки ffdshow необхідно перезавантажити комп'ютер. Виконати перезавантаження зараз?%n%nПідказка: уникнути перезавантаження комп'ютера наступного разу може допомогти включення "Відладка"-"Не використовувати в"-"explorer.exe" у конфігурації відеодекодера.
+uk.WinVersionTooLowError=Для цього білду ffdshow потрібне використання Windows XP SP2 або новіше.
 ; Add other languages here
-
 #endif
 
 [CustomMessages]
@@ -923,6 +927,82 @@ zh_Hans.shrt_vfwConfig=ffdshow VFW 设置
 zh_Hans.shrt_uninstall=卸载 ffdshow
 ;zh_Hans.shrt_homepage=Homepage
 
+
+; Ukrainian
+uk.langid=1058
+uk.msg_uninstallFirst=Спершу ви повинні видалити стару версію ffdshow.
+uk.simd_msg_sse=Цей білд ffdshow вимагає ЦП з підтримкою SSE інструкцій. Ваш ЦП їх не підтримує.
+uk.simd_msg_sse2=Цей білд ffdshow вимагає ЦП з підтримкою SSE2 інструкцій. Ваш ЦП їх не підтримує.
+uk.unsupported_cpu=Цей білд ffdshow вимагає ЦП з архітектурою i686 або новіше. Ваш ЦП не підтримується. Білд 1940 ffdshow є останнім для використання із старими ЦП.
+
+uk.comp_ffdshowds=ffdshow DirectShow-фільтр
+uk.comp_dxvaDecoder=DXVA відеодекодер
+uk.comp_vfwInterface=VFW інтерфейс
+uk.comp_makeAvis=Обслуговування скриптів AviSynth
+uk.comp_appPlugins=Плагіни додатків:
+uk.comp_msg_selectOneComp=Ви повинні відмітити хоч би один компонент.
+
+uk.tsk_settings=Налаштування
+uk.tsk_resetSettings=Скинути усі налаштування ffdshow
+uk.tsk_videoFormats=Відеоформати
+uk.tsk_videoFormatsSelect=Декодувати наступні відеоформати з ffdshow:
+uk.tsk_genericMpeg4=Generic MPEG-4
+uk.tsk_rawVideo=Raw Video
+uk.tsk_audioFormats=Аудіоформати
+uk.tsk_audioFormatsSelect=Декодувати наступні аудіоформати з ffdshow:
+uk.tsk_rawAudio=Raw Audio
+uk.tsk_filters=Налаштування фільтрів
+uk.tsk_filtersSelect=Включити наступні фільтри за умовчанням:
+uk.tsk_passthroughac3=Дозволити AC3 пропуск (через S/PDIF, HDMI)
+uk.tsk_passthroughdts=Дозволити DTS пропуск (через S/PDIF, HDMI)
+uk.tsk_volumeNorm=Нормалізація звуку
+uk.tsk_subtitles=Субтитри
+uk.tsk_tweaks=Оптимізації
+uk.tsk_skipInloop=Відключити власний деблокінг H.264
+uk.tsk_compatibilityManager=Менеджер сумісності
+uk.tsk_whitelist=Дозволити використання ffdshow тільки додатками з білого списку
+uk.tsk_whitelistPrompt=Відображати вікно Менеджера сумісності, коли невідомий додаток намагається запустити ffdshow
+
+uk.spk_Label1=Налаштування аудіосистеми
+uk.spk_Label2=Виберіть конфігурацію динаміків, співпадаючу з Вашою. Ви можете змінити її після установки, використовуючи налаштування "Мікшер".
+uk.spk_Label3=Аудіосистема:
+uk.spk_mono=моно
+uk.spk_stereo=стерео
+uk.spk_quadro=квадро
+uk.spk_rear_1ch=1 тиловий канал
+uk.spk_front_2ch=2 передні канали
+uk.spk_side_2ch=2 бічні канали
+uk.spk_rear_2ch=2 тилові канали
+uk.spk_front_3ch=3 передні канали
+uk.spk_5ch=5 каналів
+uk.spk_7ch=3 передні канали + 2 бічні канали + 2 тилові канали
+uk.spk_headPhone=навушники
+uk.spk_surround=об'ємний
+uk.spk_subwoofer=сабвуфер
+uk.spk_dolby1=Dolby Surround/ProLogic
+uk.spk_dolby2=Dolby ProLogic II
+uk.spk_hrtf=Перехідна функція "для голови" (HRTF)
+uk.spk_sameAsInput=співпадає зі входом
+uk.spk_disableMixer=відключити Мікшер
+uk.spk_voiceControl=контроль середніх
+uk.spk_expandStereo=розширене стерео
+uk.spk_unknownSpk=Невідома конфігурація динаміків
+
+uk.plg_Label1=Вибір теки плагіна для %1
+uk.plg_Label2=У яку теку має бути встановлений плагін для %1?
+uk.plg_Label3=Виберіть теку, в яку має бути встановлений плагін для %1, потім натисніть "Далі".
+
+uk.run_videoConfig=Запустити конфігурацію відеодекодера
+uk.run_videoDXVAConfig=Запустити конфігурацію DXVA відеодекодера
+uk.run_audioConfig=Запустити конфігурацію аудіодекодера
+uk.run_vfwConfig=Запустити конфігурацію VFW інтерфейсу
+
+uk.shrt_videoConfig=Конфігурація відеодекодера
+uk.shrt_videoDXVAConfig=Конфігурація DXVA відеодекодера
+uk.shrt_audioConfig=Конфігурація аудіодекодера
+uk.shrt_vfwConfig=Конфігурація VFW інтерфейсу
+uk.shrt_uninstall=Деінсталяція ffdshow
+uk.shrt_homepage=Веб-сторінка ffdshow
 
 ; Add other languages here
 ca.langid=1027

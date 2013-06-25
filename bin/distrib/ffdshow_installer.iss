@@ -167,106 +167,70 @@ WizardImageFile                 = MicrosoftModern01.bmp
 WizardSmallImageFile            = SetupModernSmall26.bmp
 
 [Languages]
-#if !include_gnu_license & !include_info_before
+  #if !include_gnu_license & !include_info_before
 Name: "en";      MessagesFile: "compiler:Default.isl"
-  #if localize
+  #elif include_gnu_license & !include_info_before
+Name: "en";      MessagesFile: "compiler:Default.isl"; LicenseFile: "license\gnu_license.txt";
+  #elif !include_gnu_license & include_info_before
+Name: "en";      MessagesFile: "compiler:Default.isl"; InfoBeforeFile: "infobefore.rtf";
+  #else
+Name: "en";      MessagesFile: "compiler:Default.isl"; LicenseFile: "license\gnu_license.txt"; InfoBeforeFile: "infobefore.rtf";
+  #endif
+#if localize
 Name: "ca";      MessagesFile: "compiler:Languages\Catalan.isl"
+  #if !include_gnu_license
 Name: "cs";      MessagesFile: "compiler:Languages\Czech.isl"
+  #else
+Name: "cs";      MessagesFile: "compiler:Languages\Czech.isl"; LicenseFile: "license\copying.cs.txt"
+  #endif
 Name: "da";      MessagesFile: "compiler:Languages\Danish.isl"
+  #if !include_gnu_license & !include_info_before
 Name: "de";      MessagesFile: "compiler:Languages\German.isl"
+  #elif include_gnu_license & !include_info_before
+Name: "de";      MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "license\copying.de.txt";
+  #elif !include_gnu_license & include_info_before
+Name: "de";      MessagesFile: "compiler:Languages\German.isl";                                        InfoBeforeFile: "infobefore.de.rtf";
+  #else
+Name: "de";      MessagesFile: "compiler:Languages\German.isl"; LicenseFile: "license\copying.de.txt"; InfoBeforeFile: "infobefore.de.rtf";
+  #endif
 Name: "es";      MessagesFile: "compiler:Languages\Spanish.isl"
 Name: "eu";      MessagesFile:          "languages\Basque.isl"
 Name: "fi";      MessagesFile: "compiler:Languages\Finnish.isl"
 Name: "fr";      MessagesFile: "compiler:Languages\French.isl"
 Name: "hu";      MessagesFile: "compiler:Languages\Hungarian.isl"
 Name: "it";      MessagesFile: "compiler:Languages\Italian.isl"
+  #if !include_gnu_license
 Name: "ja";      MessagesFile: "compiler:Languages\Japanese.isl"
+  #else
+Name: "ja";      MessagesFile: "compiler:Languages\Japanese.isl"; LicenseFile: "license\copying.ja.txt"
+  #endif
 Name: "nl";      MessagesFile: "compiler:Languages\Dutch.isl"
 Name: "no";      MessagesFile: "compiler:Languages\Norwegian.isl"
+  #if !include_gnu_license & !include_info_before
 Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl"
+  #elif include_gnu_license & !include_info_before
+Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl"; LicenseFile: "license\copying.pl.txt";
+  #elif !include_gnu_license & include_info_before
+Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl";                                        InfoBeforeFile: "infobefore.pl.rtf";
+  #else
+Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl"; LicenseFile: "license\copying.pl.txt"; InfoBeforeFile: "infobefore.pl.rtf";
+  #endif
 Name: "pt_BR";   MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "pt_PT";   MessagesFile: "compiler:Languages\Portuguese.isl"
+  #if !include_gnu_license
 Name: "ru";      MessagesFile: "compiler:Languages\Russian.isl"
+  #else
+Name: "ru";      MessagesFile: "compiler:Languages\Russian.isl"; LicenseFile: "license\copying.ru.txt"
+  #endif
+  #if !include_gnu_license
 Name: "sk";      MessagesFile:          "languages\Slovak.isl"
+  #else
+Name: "sk";      MessagesFile: "compiler:Languages\Slovak.isl"; LicenseFile: "license\copying.sk.txt"
+  #endif
 Name: "sl";      MessagesFile: "compiler:Languages\Slovenian.isl"
+Name: "uk";      MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "zh_Hant"; MessagesFile:          "languages\ChineseTrad.isl"
 Name: "zh_Hans"; MessagesFile:          "languages\ChineseSimp.isl"
-  #endif
-#elif include_gnu_license & !include_info_before
-Name: "en";      MessagesFile: "compiler:Default.isl";               LicenseFile: "license\gnu_license.txt"
-  #if localize
-Name: "ca";      MessagesFile: "compiler:Languages\Catalan.isl"
-Name: "cs";      MessagesFile: "compiler:Languages\Czech.isl";       LicenseFile: "license\copying.cs.txt"
-Name: "da";      MessagesFile: "compiler:Languages\Danish.isl"
-Name: "de";      MessagesFile: "compiler:Languages\German.isl";      LicenseFile: "license\copying.de.txt"
-Name: "es";      MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "eu";      MessagesFile: "compiler:Languages\Basque.isl"
-Name: "fi";      MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "fr";      MessagesFile: "compiler:Languages\French.isl"
-Name: "hu";      MessagesFile: "compiler:Languages\Hungarian.isl"
-Name: "it";      MessagesFile: "compiler:Languages\Italian.isl"
-Name: "ja";      MessagesFile: "compiler:Languages\Japanese.isl";    LicenseFile: "license\copying.ja.txt"
-Name: "nl";      MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "no";      MessagesFile: "compiler:Languages\Norwegian.isl"
-Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl";      LicenseFile: "license\copying.pl.txt"
-Name: "pt_BR";   MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
-Name: "pt_PT";   MessagesFile: "compiler:Languages\Portuguese.isl"
-Name: "ru";      MessagesFile: "compiler:Languages\Russian.isl";     LicenseFile: "license\copying.ru.txt"
-Name: "sk";      MessagesFile: "compiler:Languages\Slovak.isl";      LicenseFile: "license\copying.sk.txt"
-Name: "sl";      MessagesFile: "compiler:Languages\Slovenian.isl"
-Name: "zh_Hant"; MessagesFile:          "languages\ChineseTrad.isl"
-Name: "zh_Hans"; MessagesFile:          "languages\ChineseSimp.isl"
-  #endif
-#elif !include_gnu_license & include_info_before
-Name: "en";      MessagesFile: "compiler:Default.isl";               InfoBeforeFile: "infobefore.rtf"
-  #if localize
-Name: "ca";      MessagesFile: "compiler:Languages\Catalan.isl"
-Name: "cs";      MessagesFile: "compiler:Languages\Czech.isl"
-Name: "da";      MessagesFile: "compiler:Languages\Danish.isl"
-Name: "de";      MessagesFile: "compiler:Languages\German.isl";      InfoBeforeFile: "infobefore\infobefore.de.rtf"
-Name: "es";      MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "eu";      MessagesFile: "compiler:Languages\Basque.isl"
-Name: "fi";      MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "fr";      MessagesFile: "compiler:Languages\French.isl"
-Name: "hu";      MessagesFile: "compiler:Languages\Hungarian.isl"
-Name: "it";      MessagesFile: "compiler:Languages\Italian.isl"
-Name: "ja";      MessagesFile: "compiler:Languages\Japanese.isl"
-Name: "nl";      MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "no";      MessagesFile: "compiler:Languages\Norwegian.isl"
-Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl";      InfoBeforeFile: "infobefore\infobefore.pl.rtf"
-Name: "pt_BR";   MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
-Name: "pt_PT";   MessagesFile: "compiler:Languages\Portuguese.isl"
-Name: "ru";      MessagesFile: "compiler:Languages\Russian.isl"
-Name: "sk";      MessagesFile: "compiler:Languages\Slovak.isl"
-Name: "sl";      MessagesFile: "compiler:Languages\Slovenian.isl"
-Name: "zh_Hant"; MessagesFile:          "languages\ChineseTrad.isl"
-Name: "zh_Hans"; MessagesFile:          "languages\ChineseSimp.isl"
-  #endif
-#else
-Name: "en";      MessagesFile: "compiler:Default.isl";               LicenseFile: "license\gnu_license.txt";  InfoBeforeFile: "infobefore\infobefore.rtf"
-  #if localize
-Name: "ca";      MessagesFile: "compiler:Languages\Catalan.isl"
-Name: "cs";      MessagesFile: "compiler:Languages\Czech.isl";       LicenseFile: "license\copying.cs.txt"
-Name: "da";      MessagesFile: "compiler:Languages\Danish.isl"
-Name: "de";      MessagesFile: "compiler:Languages\German.isl";      LicenseFile: "license\copying.de.txt";   InfoBeforeFile: "infobefore\infobefore.de.rtf"
-Name: "es";      MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "eu";      MessagesFile: "compiler:Languages\Basque.isl"
-Name: "fi";      MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "fr";      MessagesFile: "compiler:Languages\French.isl"
-Name: "hu";      MessagesFile: "compiler:Languages\Hungarian.isl"
-Name: "it";      MessagesFile: "compiler:Languages\Italian.isl"
-Name: "ja";      MessagesFile: "compiler:Languages\Japanese.isl";    LicenseFile: "license\copying.ja.txt"
-Name: "nl";      MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "no";      MessagesFile: "compiler:Languages\Norwegian.isl"
-Name: "pl";      MessagesFile: "compiler:Languages\Polish.isl";      LicenseFile: "license\copying.pl.txt";   InfoBeforeFile: "infobefore\infobefore.pl.rtf"
-Name: "pt_BR";   MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
-Name: "pt_PT";   MessagesFile: "compiler:Languages\Portuguese.isl"
-Name: "ru";      MessagesFile: "compiler:Languages\Russian.isl";     LicenseFile: "license\copying.ru.txt"
-Name: "sk";      MessagesFile: "compiler:Languages\Slovak.isl";      LicenseFile: "license\copying.sk.txt"
-Name: "sl";      MessagesFile: "compiler:Languages\Slovenian.isl"
-Name: "zh_Hant"; MessagesFile:          "languages\ChineseTrad.isl"
-Name: "zh_Hans"; MessagesFile:          "languages\ChineseSimp.isl"
-  #endif
 #endif
 
 [Types]
