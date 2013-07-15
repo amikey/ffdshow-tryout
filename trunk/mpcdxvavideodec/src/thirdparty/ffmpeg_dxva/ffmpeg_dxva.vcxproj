@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{438286B7-A9F4-411D-BCC5-948C40E37D8F}</ProjectGuid>
+    <RootNamespace>ffmpeg_dxva</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectName>ffmpeg_dxva</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="..\..\platform.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)bin\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gccbuild.bat Build x86 Debug Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gccbuild.bat Rebuild x86 Debug Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">gccbuild.bat Clean x86 Debug Silent Nocolors</NMakeCleanCommandLine>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Build x86 Debug VS2012 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Rebuild x86 Debug VS2012 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Clean x86 Debug VS2012 Silent Nocolors</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)ffmpeg_dxva.lib</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.;..;..\..;libavcodec;libavutil;..\zlib;..\..\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gccbuild.bat Build x64 Debug Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gccbuild.bat Rebuild x64 Debug Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">gccbuild.bat Clean x64 Debug Silent Nocolors</NMakeCleanCommandLine>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Build x64 Debug VS2012 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Rebuild x64 Debug VS2012 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Clean x64 Debug VS2012 Silent Nocolors</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)ffmpeg_dxva.lib</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WIN64;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.;..;..\..;libavcodec;libavutil;..\zlib;..\..\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gccbuild.bat Build x86 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gccbuild.bat Rebuild x86 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">gccbuild.bat Clean x86 Silent Nocolors</NMakeCleanCommandLine>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Build x86 VS2012 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Rebuild x86 VS2012 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Clean x86 VS2012 Silent Nocolors</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)ffmpeg_dxva.lib</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.;..;..\..;libavcodec;libavutil;..\zlib;..\..\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gccbuild.bat Build x64 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gccbuild.bat Rebuild x64 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64'">gccbuild.bat Clean x64 Silent Nocolors</NMakeCleanCommandLine>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64' And '$(PlatformToolsetVersion)'=='110'">$(SolutionDir)bin12\obj\$(Configuration)_$(Platform)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Build x64 VS2012 Silent Nocolors</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Rebuild x64 VS2012 Silent Nocolors</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|x64' And '$(PlatformToolsetVersion)'=='110'">gccbuild.bat Clean x64 VS2012 Silent Nocolors</NMakeCleanCommandLine>
+    <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)ffmpeg_dxva.lib</NMakeOutput>
+    <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN64;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.;..;..\..;libavcodec;libavutil;..\zlib;..\..\..\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeForcedIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeForcedIncludes)</NMakeForcedIncludes>
+    <NMakeAssemblySearchPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeAssemblySearchPath)</NMakeAssemblySearchPath>
+    <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="config.asm" />
+    <None Include="libavcodec\x86\deinterlace.asm" />
+    <None Include="libavcodec\x86\dsputil.asm" />
+    <None Include="libavcodec\x86\h264_chromamc.asm" />
+    <None Include="libavcodec\x86\h264_chromamc_10bit.asm" />
+    <None Include="libavcodec\x86\h264_deblock.asm" />
+    <None Include="libavcodec\x86\h264_deblock_10bit.asm" />
+    <None Include="libavcodec\x86\h264_idct.asm" />
+    <None Include="libavcodec\x86\h264_idct_10bit.asm" />
+    <None Include="libavcodec\x86\h264_intrapred.asm" />
+    <None Include="libavcodec\x86\h264_intrapred_10bit.asm" />
+    <None Include="libavcodec\x86\h264_qpel_8bit.asm" />
+    <None Include="libavcodec\x86\h264_qpel_10bit.asm" />
+    <None Include="libavcodec\x86\h264_weight.asm" />
+    <None Include="libavcodec\x86\h264_weight_10bit.asm" />
+    <None Include="libavcodec\x86\hpeldsp.asm" />
+    <None Include="libavcodec\x86\mpeg4qpel.asm" />
+    <None Include="libavcodec\x86\vc1dsp.asm" />
+    <None Include="libavcodec\x86\videodsp.asm" />
+    <None Include="libavutil\x86\cpuid.asm" />
+    <None Include="libavutil\x86\emms.asm" />
+    <None Include="libavutil\x86\float_dsp.asm" />
+    <None Include="libavutil\x86\x86inc.asm" />
+    <None Include="libavutil\x86\x86util.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libavcodec\allcodecs.c" />
+    <ClCompile Include="libavcodec\avfft.c" />
+    <ClCompile Include="libavcodec\avpacket.c" />
+    <ClCompile Include="libavcodec\avpicture.c" />
+    <ClCompile Include="libavcodec\bitstream.c" />
+    <ClCompile Include="libavcodec\bit_depth_template.c" />
+    <ClCompile Include="libavcodec\cabac.c" />
+    <ClCompile Include="libavcodec\codec_desc.c" />
+    <ClCompile Include="libavcodec\cook.c" />
+    <ClCompile Include="libavcodec\dct.c" />
+    <ClCompile Include="libavcodec\dct32.c" />
+    <ClCompile Include="libavcodec\dct32_float.c" />
+    <ClCompile Include="libavcodec\dsputil.c" />
+    <ClCompile Include="libavcodec\dsputil_template.c" />
+    <ClCompile Include="libavcodec\error_resilience.c" />
+    <ClCompile Include="libavcodec\faanidct.c" />
+    <ClCompile Include="libavcodec\frame_thread_encoder.c" />
+    <ClCompile Include="libavcodec\golomb.c" />
+    <ClCompile Include="libavcodec\h263.c" />
+    <ClCompile Include="libavcodec\h263dec.c" />
+    <ClCompile Include="libavcodec\h263_parser.c" />
+    <ClCompile Include="libavcodec\h264.c" />
+    <ClCompile Include="libavcodec\h264addpx_template.c" />
+    <ClCompile Include="libavcodec\h264chroma.c" />
+    <ClCompile Include="libavcodec\h264chroma_template.c" />
+    <ClCompile Include="libavcodec\h264dsp.c" />
+    <ClCompile Include="libavcodec\h264dsp_template.c" />
+    <ClCompile Include="libavcodec\h264idct.c" />
+    <ClCompile Include="libavcodec\h264idct_template.c" />
+    <ClCompile Include="libavcodec\h264pred.c" />
+    <ClCompile Include="libavcodec\h264pred_template.c" />
+    <ClCompile Include="libavcodec\h264qpel.c" />
+    <ClCompile Include="libavcodec\h264qpel_template.c" />
+    <ClCompile Include="libavcodec\h264_cabac.c" />
+    <ClCompile Include="libavcodec\h264_cavlc.c" />
+    <ClCompile Include="libavcodec\h264_direct.c" />
+    <ClCompile Include="libavcodec\h264_dxva.c" />
+    <ClCompile Include="libavcodec\h264_loopfilter.c" />
+    <ClCompile Include="libavcodec\h264_mb_template.c" />
+    <ClCompile Include="libavcodec\h264_mc_template.c" />
+    <ClCompile Include="libavcodec\h264_parser.c" />
+    <ClCompile Include="libavcodec\h264_ps.c" />
+    <ClCompile Include="libavcodec\h264_recov.c" />
+    <ClCompile Include="libavcodec\h264_refs.c" />
+    <ClCompile Include="libavcodec\h264_sei.c" />
+    <ClCompile Include="libavcodec\hpel_template.c" />
+    <ClCompile Include="libavcodec\huffman.c" />
+    <ClCompile Include="libavcodec\imgconvert.c" />
+    <ClCompile Include="libavcodec\indeo3.c" />
+    <ClCompile Include="libavcodec\indeo4.c" />
+    <ClCompile Include="libavcodec\indeo5.c" />
+    <ClCompile Include="libavcodec\intelh263dec.c" />
+    <ClCompile Include="libavcodec\intrax8.c" />
+    <ClCompile Include="libavcodec\intrax8dsp.c" />
+    <ClCompile Include="libavcodec\ituh263dec.c" />
+    <ClCompile Include="libavcodec\jrevdct.c" />
+    <ClCompile Include="libavcodec\log2_tab.c" />
+    <ClCompile Include="libavcodec\lsp.c" />
+    <ClCompile Include="libavcodec\mathtables.c" />
+    <ClCompile Include="libavcodec\mdct.c" />
+    <ClCompile Include="libavcodec\mpeg4video.c" />
+    <ClCompile Include="libavcodec\mpeg4videodec.c" />
+    <ClCompile Include="libavcodec\mpeg4video_parser.c" />
+    <ClCompile Include="libavcodec\mpegvideo.c" />
+    <ClCompile Include="libavcodec\mpegvideo_motion.c" />
+    <ClCompile Include="libavcodec\mpegvideo_parser.c" />
+    <ClCompile Include="libavcodec\msmpeg4.c" />
+    <ClCompile Include="libavcodec\msmpeg4data.c" />
+    <ClCompile Include="libavcodec\options.c" />
+    <ClCompile Include="libavcodec\parser.c" />
+    <ClCompile Include="libavcodec\pthread.c" />
+    <ClCompile Include="libavcodec\rdft.c" />
+    <ClCompile Include="libavcodec\simple_idct.c" />
+    <ClCompile Include="libavcodec\simple_idct_template.c" />
+    <ClCompile Include="libavcodec\utils.c" />
+    <ClCompile Include="libavcodec\vc1.c" />
+    <ClCompile Include="libavcodec\vc1data.c" />
+    <ClCompile Include="libavcodec\vc1dec.c" />
+    <ClCompile Include="libavcodec\vc1dsp.c" />
+    <ClCompile Include="libavcodec\vc1_dxva.c" />
+    <ClCompile Include="libavcodec\videodsp.c" />
+    <ClCompile Include="libavcodec\videodsp_template.c" />
+    <ClCompile Include="libavcodec\x86\dsputil_avg_template.c" />
+    <ClCompile Include="libavcodec\x86\dsputil_mmx.c" />
+    <ClCompile Include="libavcodec\x86\dsputil_qns_template.c" />
+    <ClCompile Include="libavcodec\x86\dsputil_rnd_template.c" />
+    <ClCompile Include="libavcodec\x86\h264chroma_init.c" />
+    <ClCompile Include="libavcodec\x86\h264dsp_init.c" />
+    <ClCompile Include="libavcodec\x86\h264_intrapred_init.c" />
+    <ClCompile Include="libavcodec\x86\h264_qpel.c" />
+    <ClCompile Include="libavcodec\x86\idct_mmx.c" />
+    <ClCompile Include="libavcodec\x86\idct_mmx_xvid.c" />
+    <ClCompile Include="libavcodec\x86\idct_sse2_xvid.c" />
+    <ClCompile Include="libavcodec\x86\motion_est.c" />
+    <ClCompile Include="libavcodec\x86\mpegvideo.c" />
+    <ClCompile Include="libavcodec\x86\simple_idct.c" />
+    <ClCompile Include="libavcodec\x86\vc1dsp_init.c" />
+    <ClCompile Include="libavcodec\x86\vc1dsp_mmx.c" />
+    <ClCompile Include="libavcodec\x86\videodsp_init.c" />
+    <ClCompile Include="libavutil\audio_fifo.c" />
+    <ClCompile Include="libavutil\avstring.c" />
+    <ClCompile Include="libavutil\bprint.c" />
+    <ClCompile Include="libavutil\channel_layout.c" />
+    <ClCompile Include="libavutil\cpu.c" />
+    <ClCompile Include="libavutil\crc.c" />
+    <ClCompile Include="libavutil\dict.c" />
+    <ClCompile Include="libavutil\error.c" />
+    <ClCompile Include="libavutil\eval.c" />
+    <ClCompile Include="libavutil\fifo.c" />
+    <ClCompile Include="libavutil\imgutils.c" />
+    <ClCompile Include="libavutil\intfloat_readwrite.c" />
+    <ClCompile Include="libavutil\lfg.c" />
+    <ClCompile Include="libavutil\lls.c" />
+    <ClCompile Include="libavutil\log.c" />
+    <ClCompile Include="libavutil\log2_tab.c" />
+    <ClCompile Include="libavutil\lzo.c" />
+    <ClCompile Include="libavutil\mathematics.c" />
+    <ClCompile Include="libavutil\md5.c" />
+    <ClCompile Include="libavutil\mem.c" />
+    <ClCompile Include="libavutil\opt.c" />
+    <ClCompile Include="libavutil\parseutils.c" />
+    <ClCompile Include="libavutil\pixdesc.c" />
+    <ClCompile Include="libavutil\random_seed.c" />
+    <ClCompile Include="libavutil\rational.c" />
+    <ClCompile Include="libavutil\samplefmt.c" />
+    <ClCompile Include="libavutil\sha.c" />
+    <ClCompile Include="libavutil\time.c" />
+    <ClCompile Include="libavutil\timecode.c" />
+    <ClCompile Include="libavutil\utils.c" />
+    <ClCompile Include="libavutil\x86\cpu.c" />
+    <ClCompile Include="libavutil\x86\float_dsp_init.c" />
+    <ClCompile Include="mpc_helper.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.h" />
+    <ClInclude Include="libavcodec\audioconvert.h" />
+    <ClInclude Include="libavcodec\audio_frame_queue.h" />
+    <ClInclude Include="libavcodec\avcodec.h" />
+    <ClInclude Include="libavcodec\avfft.h" />
+    <ClInclude Include="libavcodec\bytestream.h" />
+    <ClInclude Include="libavcodec\cabac.h" />
+    <ClInclude Include="libavcodec\cabac_functions.h" />
+    <ClInclude Include="libavcodec\cbrt_tablegen.h" />
+    <ClInclude Include="libavcodec\cookdata.h" />
+    <ClInclude Include="libavcodec\copy_block.h" />
+    <ClInclude Include="libavcodec\dct.h" />
+    <ClInclude Include="libavcodec\dct32.h" />
+    <ClInclude Include="libavcodec\diracdsp.h" />
+    <ClInclude Include="libavcodec\dsputil.h" />
+    <ClInclude Include="libavcodec\dxva.h" />
+    <ClInclude Include="libavcodec\faandct.h" />
+    <ClInclude Include="libavcodec\faanidct.h" />
+    <ClInclude Include="libavcodec\fft.h" />
+    <ClInclude Include="libavcodec\flv.h" />
+    <ClInclude Include="libavcodec\frame_thread_encoder.h" />
+    <ClInclude Include="libavcodec\get_bits.h" />
+    <ClInclude Include="libavcodec\golomb.h" />
+    <ClInclude Include="libavcodec\h263.h" />
+    <ClInclude Include="libavcodec\h263data.h" />
+    <ClInclude Include="libavcodec\h263_parser.h" />
+    <ClInclude Include="libavcodec\h264.h" />
+    <ClInclude Include="libavcodec\h264chroma.h" />
+    <ClInclude Include="libavcodec\h264data.h" />
+    <ClInclude Include="libavcodec\h264dsp.h" />
+    <ClInclude Include="libavcodec\h264idct.h" />
+    <ClInclude Include="libavcodec\h264pred.h" />
+    <ClInclude Include="libavcodec\h264qpel.h" />
+    <ClInclude Include="libavcodec\h264_mvpred.h" />
+    <ClInclude Include="libavcodec\huffman.h" />
+    <ClInclude Include="libavcodec\imgconvert.h" />
+    <ClInclude Include="libavcodec\internal.h" />
+    <ClInclude Include="libavcodec\intrax8.h" />
+    <ClInclude Include="libavcodec\intrax8dsp.h" />
+    <ClInclude Include="libavcodec\intrax8huf.h" />
+    <ClInclude Include="libavcodec\lpc.h" />
+    <ClInclude Include="libavcodec\lsp.h" />
+    <ClInclude Include="libavcodec\mathops.h" />
+    <ClInclude Include="libavcodec\mpegvideo.h" />
+    <ClInclude Include="libavcodec\msmpeg4.h" />
+    <ClInclude Include="libavcodec\msmpeg4data.h" />
+    <ClInclude Include="libavcodec\old_codec_ids.h" />
+    <ClInclude Include="libavcodec\options_table.h" />
+    <ClInclude Include="libavcodec\parser.h" />
+    <ClInclude Include="libavcodec\png.h" />
+    <ClInclude Include="libavcodec\put_bits.h" />
+    <ClInclude Include="libavcodec\rdft.h" />
+    <ClInclude Include="libavcodec\rectangle.h" />
+    <ClInclude Include="libavcodec\rl.h" />
+    <ClInclude Include="libavcodec\rnd_avg.h" />
+    <ClInclude Include="libavcodec\thread.h" />
+    <ClInclude Include="libavcodec\unary.h" />
+    <ClInclude Include="libavcodec\vc1.h" />
+    <ClInclude Include="libavcodec\vc1acdata.h" />
+    <ClInclude Include="libavcodec\vc1data.h" />
+    <ClInclude Include="libavcodec\vc1dsp.h" />
+    <ClInclude Include="libavcodec\vdpau_internal.h" />
+    <ClInclude Include="libavcodec\version.h" />
+    <ClInclude Include="libavcodec\videodsp.h" />
+    <ClInclude Include="libavcodec\w32pthreads.h" />
+    <ClInclude Include="libavcodec\x86\cabac.h" />
+    <ClInclude Include="libavcodec\x86\diracdsp_mmx.h" />
+    <ClInclude Include="libavcodec\x86\dsputil_mmx.h" />
+    <ClInclude Include="libavcodec\x86\h264_i386.h" />
+    <ClInclude Include="libavcodec\x86\idct_xvid.h" />
+    <ClInclude Include="libavcodec\x86\mathops.h" />
+    <ClInclude Include="libavcodec\x86\vc1dsp.h" />
+    <ClInclude Include="libavcodec\xvmc_internal.h" />
+    <ClInclude Include="libavutil\attributes.h" />
+    <ClInclude Include="libavutil\audioconvert.h" />
+    <ClInclude Include="libavutil\audio_fifo.h" />
+    <ClInclude Include="libavutil\avassert.h" />
+    <ClInclude Include="libavutil\avconfig.h" />
+    <ClInclude Include="libavutil\avstring.h" />
+    <ClInclude Include="libavutil\avutil.h" />
+    <ClInclude Include="libavutil\bprint.h" />
+    <ClInclude Include="libavutil\bswap.h" />
+    <ClInclude Include="libavutil\channel_layout.h" />
+    <ClInclude Include="libavutil\colorspace.h" />
+    <ClInclude Include="libavutil\common.h" />
+    <ClInclude Include="libavutil\cpu.h" />
+    <ClInclude Include="libavutil\crc.h" />
+    <ClInclude Include="libavutil\dict.h" />
+    <ClInclude Include="libavutil\error.h" />
+    <ClInclude Include="libavutil\eval.h" />
+    <ClInclude Include="libavutil\fifo.h" />
+    <ClInclude Include="libavutil\imgutils.h" />
+    <ClInclude Include="libavutil\internal.h" />
+    <ClInclude Include="libavutil\intfloat.h" />
+    <ClInclude Include="libavutil\intfloat_readwrite.h" />
+    <ClInclude Include="libavutil\intmath.h" />
+    <ClInclude Include="libavutil\intreadwrite.h" />
+    <ClInclude Include="libavutil\lfg.h" />
+    <ClInclude Include="libavutil\libm.h" />
+    <ClInclude Include="libavutil\lls.h" />
+    <ClInclude Include="libavutil\log.h" />
+    <ClInclude Include="libavutil\lzo.h" />
+    <ClInclude Include="libavutil\mathematics.h" />
+    <ClInclude Include="libavutil\md5.h" />
+    <ClInclude Include="libavutil\mem.h" />
+    <ClInclude Include="libavutil\old_pix_fmts.h" />
+    <ClInclude Include="libavutil\opt.h" />
+    <ClInclude Include="libavutil\parseutils.h" />
+    <ClInclude Include="libavutil\pixdesc.h" />
+    <ClInclude Include="libavutil\pixfmt.h" />
+    <ClInclude Include="libavutil\random_seed.h" />
+    <ClInclude Include="libavutil\rational.h" />
+    <ClInclude Include="libavutil\samplefmt.h" />
+    <ClInclude Include="libavutil\sha.h" />
+    <ClInclude Include="libavutil\time.h" />
+    <ClInclude Include="libavutil\timecode.h" />
+    <ClInclude Include="libavutil\timer.h" />
+    <ClInclude Include="libavutil\version.h" />
+    <ClInclude Include="libavutil\x86\asm.h" />
+    <ClInclude Include="libavutil\x86\bswap.h" />
+    <ClInclude Include="libavutil\x86\cpu.h" />
+    <ClInclude Include="libavutil\x86\emms.h" />
+    <ClInclude Include="libavutil\x86\intreadwrite.h" />
+    <ClInclude Include="libavutil\x86\timer.h" />
+    <ClInclude Include="libavutil\x86_cpu.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
