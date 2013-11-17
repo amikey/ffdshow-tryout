@@ -239,7 +239,8 @@ Name: "Normal"; Description: "Normal"; Flags: iscustom
 [Components]
 Name: "ffdshow";                    Description: "{cm:comp_ffdshowds}";    Types: Normal; Flags: fixed
 Name: "ffdshow\dxva";               Description: "{cm:comp_dxvaDecoder}"
-Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;
+Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;                                    OnlyBelowVersion: 6.2
+Name: "ffdshow\vfw2";               Description: "{cm:comp_vfwInterface} (not compatible with Windows 8 x64)"; Flags: fixed; MinVersion: 6.2
 #if include_makeavis
 Name: "ffdshow\makeavis";           Description: "{cm:comp_makeAvis}";     Flags: dontinheritcheck
 #endif
@@ -351,7 +352,7 @@ Name: "whitelist\prompt";        Description: "{cm:tsk_whitelistPrompt}";       
 Name: {group}\{cm:shrt_audioConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: ffdshow
 Name: {group}\{cm:shrt_videoConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: ffdshow
 Name: {group}\{cm:shrt_videoDXVAConfig} x64; Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 10; Components: ffdshow\dxva
-Name: {group}\{cm:shrt_vfwConfig} x64;       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: ffdshow\vfw; OnlyBelowVersion: 6.2;
+Name: {group}\{cm:shrt_vfwConfig} x64;       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: ffdshow\vfw;
 #else
 Name: {group}\{cm:shrt_audioConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: ffdshow
 Name: {group}\{cm:shrt_videoConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: ffdshow
@@ -438,6 +439,10 @@ Type: files; Name: "{app}\libmplayer.dll";                         Components: f
 Type: files; Name: "{app}\ff_tremor.dll";                          Components: ffdshow
 Type: files; Name: "{app}\ff_x264.dll";                            Components: ffdshow
 Type: files; Name: "{app}\ffmpegmt.dll";                           Components: ffdshow
+#if is64bit
+Type: files; Name: "{sys}\ff_vfw.dll";                             Components: ffdshow; MinVersion: 6.2
+Type: files; Name: "{sys}\ff_acm.acm";                             Components: ffdshow; MinVersion: 6.2
+#endif
 
 [Registry]
 #if is64bit
@@ -509,6 +514,17 @@ Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.a
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Description";  ValueData: "ffdshow ACM codec";     Components: ffdshow\makeavis;
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Driver";       ValueData: "ff_acm.acm";            Components: ffdshow\makeavis;
 Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "FriendlyName"; ValueData: "ffdshow ACM codec";     Components: ffdshow\makeavis;
+#endif
+
+; Remove old incompatible codecs on Windows 8 x64
+#if is64bit
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_vfw.dll"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "VIDC.FFDS";  Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";                          Flags: deletekey;   Components: ffdshow; MinVersion: 6.2
+
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_acm.acm"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "msacm.avis"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis";                         Flags: deletekey;   Components: ffdshow; MinVersion: 6.2
 #endif
 
 ; Recommended settings
