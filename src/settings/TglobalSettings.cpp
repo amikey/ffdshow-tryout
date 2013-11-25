@@ -825,8 +825,8 @@ void TglobalSettingsDecVideo::save(void)
  FF_FOURCC1_OP(Y41B,(rawv==1 || rawv==2 || rawv==FOURCC_Y41B)& dxvamask,CODEC_ID_411P) \
  FF_FOURCC1_OP(422P,(rawv==1 || rawv==2 || rawv==FOURCC_422P)& dxvamask,CODEC_ID_422P) \
  FF_FOURCC1_OP(444P,(rawv==1 || rawv==2 || rawv==FOURCC_444P)& dxvamask,CODEC_ID_444P) \
- FF_FOURCC1_OP(YV24,(rawv==1 || rawv==2 || rawv==FOURCC_YV24)& dxvamask,CODEC_ID_444P) \
- FF_FOURCC1_OP(YV16,(rawv==1 || rawv==2 || rawv==FOURCC_YV16)& dxvamask,CODEC_ID_YV16) \
+ /*FF_FOURCC1_OP(YV24,(rawv==1 || rawv==2 || rawv==FOURCC_YV24)& dxvamask,CODEC_ID_444P)*/ \
+ /*FF_FOURCC1_OP(YV16,(rawv==1 || rawv==2 || rawv==FOURCC_YV16)& dxvamask,CODEC_ID_YV16)*/ \
  /* exotic */ \
  FF_FOURCC_OP (MP4S,mp4v & rawmask & dxvamask,c_mpeg4) \
  FF_FOURCC_OP (SEDG,mp4v & rawmask & dxvamask,c_mpeg4) \
