@@ -239,8 +239,12 @@ Name: "Normal"; Description: "Normal"; Flags: iscustom
 [Components]
 Name: "ffdshow";                    Description: "{cm:comp_ffdshowds}";    Types: Normal; Flags: fixed
 Name: "ffdshow\dxva";               Description: "{cm:comp_dxvaDecoder}"
+#if is64bit
 Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;                                    OnlyBelowVersion: 6.2
 Name: "ffdshow\vfw2";               Description: "{cm:comp_vfwInterface} (not compatible with Windows 8 x64)"; Flags: fixed; MinVersion: 6.2
+#else
+Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;
+#endif
 #if include_makeavis
 Name: "ffdshow\makeavis";           Description: "{cm:comp_makeAvis}";     Flags: dontinheritcheck
 #endif
