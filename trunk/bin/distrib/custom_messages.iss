@@ -86,9 +86,13 @@ en.simd_msg_sse=This build of ffdshow requires a CPU with SSE extension support.
 en.simd_msg_sse2=This build of ffdshow requires a CPU with SSE2 extension support. Your CPU does not have those capabilities.
 en.unsupported_cpu=This build of ffdshow requires a CPU of type i686 or newer. Your CPU is not supported. Revision 1940 of ffdshow is the last one that works on old CPUs.
 
-en.comp_ffdshowds=ffdshow DirectShow filter
-en.comp_dxvaDecoder=DXVA video decoder
+en.comp_video=video decoder
+en.comp_audio=audio decoder
+en.comp_dxva=DXVA video decoder
+en.comp_videoproc=raw video processor
+en.comp_audioproc=raw audio processor
 en.comp_vfwInterface=VFW interface
+en.comp_vfwInterface_win8x64=VFW interface (WARNING: may cause crashes in certain applications on Windows 8 x64)
 en.comp_makeAvis=AviSynth scripts serving
 en.comp_appPlugins=Application plugins:
 en.comp_msg_selectOneComp=You must select at least one component.
