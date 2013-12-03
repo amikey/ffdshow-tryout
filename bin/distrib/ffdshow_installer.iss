@@ -1,7 +1,7 @@
 ; Requires Inno Setup Unicode: http://www.jrsoftware.org/isdl.php
 ; (Make sure you choose to install Inno Setup Preprocessor)
-#if VER < EncodeVer(5,5,1)
-  #error Update your Inno Setup version (5.5.1 or newer)
+#if VER < EncodeVer(5,5,4)
+  #error Update your Inno Setup version (5.5.4 or newer)
 #endif
 #ifndef UNICODE
   #error Use the Unicode Inno Setup
@@ -42,7 +42,6 @@
 ; Custom builder preferences (uncomment one to enable, or define it through a command line parameter)
 ; example: ISCC.exe ffdshow_installer.iss /dPREF_XYZ
 ;#define PREF_CLSID
-;#define PREF_CLSID_ICL
 ;#define PREF_CLSID_X64
 ;#define PREF_YAMAGATA
 ;#define PREF_XXL
@@ -55,12 +54,6 @@
 
 #ifdef PREF_CLSID
   #define filename_suffix        = '_clsid'
-  #define bindir                 = '..\x86'
-  #define outputdir              = '..\..\..\'
-#endif
-#ifdef PREF_CLSID_ICL
-  #define sse_required           = True
-  #define filename_suffix        = '_clsid_icl10'
   #define bindir                 = '..\x86'
   #define outputdir              = '..\..\..\'
 #endif
@@ -149,6 +142,7 @@ MinVersion                      = 5.01SP2
 OutputBaseFilename              = ffdshow_rev{#= SVN_REVISION}_{#= BUILD_YEAR}{#= BUILD_MONTH}{#= BUILD_DAY}{#= filename_suffix}
 OutputDir                       = {#= outputdir}
 PrivilegesRequired              = admin
+ShowComponentSizes              = no
 #if include_setup_icon
 SetupIconFile                   = ..\..\src\FFd.ico
 #endif
@@ -237,215 +231,215 @@ Name: "zh_Hans"; MessagesFile:          "languages\ChineseSimp.isl"
 Name: "Normal"; Description: "Normal"; Flags: iscustom
 
 [Components]
-Name: "ffdshow";                    Description: "{cm:comp_ffdshowds}";    Types: Normal; Flags: fixed
-Name: "ffdshow\dxva";               Description: "{cm:comp_dxvaDecoder}"
+Name: "directshow";           Description: DirectShow:;
+Name: "directshow\video";     Description: "{cm:comp_video}";     Types: Normal;
+Name: "directshow\audio";     Description: "{cm:comp_audio}";     Types: Normal;
+Name: "directshow\dxva";      Description: "{cm:comp_dxva}";
+Name: "directshow\videoproc"; Description: "{cm:comp_videoproc}"; Types: Normal;
+Name: "directshow\audioproc"; Description: "{cm:comp_audioproc}"; Types: Normal;
 #if is64bit
-Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;                                    OnlyBelowVersion: 6.2
-Name: "ffdshow\vfw2";               Description: "{cm:comp_vfwInterface} (not compatible with Windows 8 x64)"; Flags: fixed; MinVersion: 6.2
+Name: "vfw";                  Description: "{cm:comp_vfwInterface}";         Types: Normal; OnlyBelowVersion: 6.2
+Name: "vfw";                  Description: "{cm:comp_vfwInterface_win8x64}";                MinVersion: 6.2
 #else
-Name: "ffdshow\vfw";                Description: "{cm:comp_vfwInterface}"; Types: Normal;
-#endif
-#if include_makeavis
-Name: "ffdshow\makeavis";           Description: "{cm:comp_makeAvis}";     Flags: dontinheritcheck
+Name: "vfw";                  Description: "{cm:comp_vfwInterface}";         Types: Normal;
 #endif
 #if include_plugin_avisynth | include_plugin_virtualdub | include_plugin_dscaler
-Name: "ffdshow\plugins";            Description: "{cm:comp_appPlugins}";   Flags: dontinheritcheck
+Name: "plugins";              Description: "{cm:comp_appPlugins}";
   #if include_plugin_avisynth
-Name: "ffdshow\plugins\avisynth";   Description: "AviSynth";
+Name: "plugins\avisynth";     Description: "AviSynth";
   #endif
   #if include_plugin_virtualdub
-Name: "ffdshow\plugins\virtualdub"; Description: "VirtualDub";
+Name: "plugins\virtualdub";   Description: "VirtualDub";
   #endif
   #if include_plugin_dscaler
-Name: "ffdshow\plugins\dscaler";    Description: "DScaler";
+Name: "plugins\dscaler";      Description: "DScaler";
   #endif
+#endif
+#if include_makeavis
+Name: "makeavis";             Description: "{cm:comp_makeAvis}";
 #endif
 
 [Tasks]
-Name: "resetsettings";           Description: "{cm:tsk_resetSettings}";           Components: ffdshow;                                    Check: NOT IsUpdate; GroupDescription: "{cm:tsk_settings}"
-Name: "video";                   Description: "{cm:tsk_videoFormatsSelect}";      Components: ffdshow; Flags: unchecked;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_videoFormats}"
-Name: "video\h264";              Description: "H.264 / AVC";                      Components: ffdshow
-Name: "video\h264\libavcodec";   Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
+Name: "resetsettings";           Description: "{cm:tsk_resetSettings}";                                                                 Check: NOT IsUpdate; GroupDescription: "{cm:tsk_settings}"
+Name: "video";                   Description: "{cm:tsk_videoFormatsSelect}";  Flags: unchecked;           Components: directshow\video; Check: NOT IsUpdate; GroupDescription: "{cm:tsk_videoFormats}"
+Name: "video\h264";              Description: "H.264 / AVC";
+Name: "video\h264\libavcodec";   Description: "libavcodec";                   Flags: unchecked exclusive
 #if include_quicksync
-Name: "video\h264\quicksync";    Description: "Intel QuickSync";                  Components: ffdshow; Flags: unchecked exclusive;        Check: IsQSCapableIntelCPU; MinVersion: 6.0;
+Name: "video\h264\quicksync";    Description: "Intel QuickSync";              Flags: unchecked exclusive; Check: IsQSCapableIntelCPU; MinVersion: 6.0;
 #endif
-Name: "video\divx";              Description: "DivX";                             Components: ffdshow
-Name: "video\xvid";              Description: "Xvid";                             Components: ffdshow
-Name: "video\mpeg4";             Description: "{cm:tsk_genericMpeg4}";            Components: ffdshow
-Name: "video\flv";               Description: "FLV1, FLV4";                       Components: ffdshow
-Name: "video\vp6";               Description: "VP6";                              Components: ffdshow
-Name: "video\h263";              Description: "H.263(+)";                         Components: ffdshow
-Name: "video\mpeg1";             Description: "MPEG-1";                           Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\mpeg1\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
-Name: "video\mpeg1\libavcodec";  Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
-Name: "video\mpeg2";             Description: "MPEG-2";                           Components: ffdshow; Flags: unchecked
-Name: "video\mpeg2\libmpeg2";    Description: "libmpeg2";                         Components: ffdshow; Flags: unchecked exclusive
-Name: "video\mpeg2\libavcodec";  Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
+Name: "video\divx";              Description: "DivX";
+Name: "video\xvid";              Description: "Xvid";
+Name: "video\mpeg4";             Description: "{cm:tsk_genericMpeg4}";
+Name: "video\flv";               Description: "FLV1, FLV4";
+Name: "video\vp6";               Description: "VP6";
+Name: "video\h263";              Description: "H.263(+)";
+Name: "video\mpeg1";             Description: "MPEG-1";                       Flags: unchecked dontinheritcheck
+Name: "video\mpeg1\libmpeg2";    Description: "libmpeg2";                     Flags: unchecked exclusive
+Name: "video\mpeg1\libavcodec";  Description: "libavcodec";                   Flags: unchecked exclusive
+Name: "video\mpeg2";             Description: "MPEG-2";                       Flags: unchecked
+Name: "video\mpeg2\libmpeg2";    Description: "libmpeg2";                     Flags: unchecked exclusive
+Name: "video\mpeg2\libavcodec";  Description: "libavcodec";                   Flags: unchecked exclusive
 #if include_quicksync
-Name: "video\mpeg2\quicksync";   Description: "Intel QuickSync";                  Components: ffdshow; Flags: unchecked exclusive;        Check: IsQSCapableIntelCPU; MinVersion: 6.0;
+Name: "video\mpeg2\quicksync";   Description: "Intel QuickSync";              Flags: unchecked exclusive; Check: IsQSCapableIntelCPU; MinVersion: 6.0;
 #endif
-Name: "video\huffyuv";           Description: "Huffyuv";                          Components: ffdshow
-Name: "video\qt";                Description: "SVQ1, SVQ3, RPZA, QT RLE";         Components: ffdshow
-Name: "video\vc1";               Description: "VC-1";                             Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\vc1\wmv9";          Description: "wmv9";                             Components: ffdshow; Flags: unchecked exclusive
-Name: "video\vc1\libavcodec";    Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
+Name: "video\huffyuv";           Description: "Huffyuv";
+Name: "video\qt";                Description: "SVQ1, SVQ3, RPZA, QT RLE";
+Name: "video\vc1";               Description: "VC-1";                         Flags: unchecked dontinheritcheck
+Name: "video\vc1\wmv9";          Description: "wmv9";                         Flags: unchecked exclusive
+Name: "video\vc1\libavcodec";    Description: "libavcodec";                   Flags: unchecked exclusive
 #if include_quicksync
-Name: "video\vc1\quicksync";     Description: "Intel QuickSync";                  Components: ffdshow; Flags: unchecked exclusive;        Check: IsQSCapableIntelCPU; MinVersion: 6.0;
+Name: "video\vc1\quicksync";     Description: "Intel QuickSync";              Flags: unchecked exclusive; Check: IsQSCapableIntelCPU; MinVersion: 6.0;
 #endif
-Name: "video\wmv1";              Description: "WMV1";                             Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\wmv2";              Description: "WMV2";                             Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\wmv3";              Description: "WMV3";                             Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\wmv3\wmv9";         Description: "wmv9";                             Components: ffdshow; Flags: unchecked exclusive
-Name: "video\wmv3\libavcodec";   Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
+Name: "video\wmv1";              Description: "WMV1";                         Flags: unchecked dontinheritcheck
+Name: "video\wmv2";              Description: "WMV2";                         Flags: unchecked dontinheritcheck
+Name: "video\wmv3";              Description: "WMV3";                         Flags: unchecked dontinheritcheck
+Name: "video\wmv3\wmv9";         Description: "wmv9";                         Flags: unchecked exclusive
+Name: "video\wmv3\libavcodec";   Description: "libavcodec";                   Flags: unchecked exclusive
 #if include_quicksync
-Name: "video\wmv3\quicksync";    Description: "Intel QuickSync";                  Components: ffdshow; Flags: unchecked exclusive
+Name: "video\wmv3\quicksync";    Description: "Intel QuickSync";              Flags: unchecked exclusive
 #endif
-Name: "video\wvp2";              Description: "WMVP, WVP2";                       Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\mss2";              Description: "MSS1, MSS2";                       Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\dvsd";              Description: "DV";                               Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "video\techsmith";         Description: "Techsmith";                        Components: ffdshow; Flags: unchecked
-Name: "video\fraps";             Description: "Fraps";                            Components: ffdshow; Flags: unchecked
-Name: "video\msvidc";            Description: "MS Video 1";                       Components: ffdshow; Flags: unchecked
-Name: "video\msrle";             Description: "MS RLE";                           Components: ffdshow; Flags: unchecked
-Name: "video\cinepak";           Description: "Cinepak";                          Components: ffdshow; Flags: unchecked
-Name: "video\mjpeg";             Description: "MJPEG";                            Components: ffdshow
-Name: "video\truemotion";        Description: "TrueMotion";                       Components: ffdshow
-Name: "video\camstudio";         Description: "Camstudio";                        Components: ffdshow
-Name: "video\indeo";             Description: "Indeo 2/3";                        Components: ffdshow
-Name: "video\other1";            Description: "Theora, VP3, VP5";                 Components: ffdshow
-Name: "video\other2";            Description: "CorePNG, H.261, MSZH, ZLIB";       Components: ffdshow
-Name: "video\other3";            Description: "8BPS, ASV1/2, CYUV, LOCO, QPEG, VCR1, WNV1"; Components: ffdshow; Flags: unchecked
-Name: "video\other4";            Description: "AASC, Ultimotion, VIXL, ZMBV";     Components: ffdshow; Flags: unchecked
-Name: "video\rawv";              Description: "{cm:tsk_rawVideo}";                Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "audio";                   Description: "{cm:tsk_audioFormatsSelect}";      Components: ffdshow; Flags: unchecked;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_audioFormats}"
-Name: "audio\mp2";               Description: "MP1, MP2";                         Components: ffdshow;
-Name: "audio\mp3";               Description: "MP3";                              Components: ffdshow
-Name: "audio\aac";               Description: "AAC";                              Components: ffdshow
-Name: "audio\ac3";               Description: "AC3";                              Components: ffdshow
-Name: "audio\dts";               Description: "DTS";                              Components: ffdshow
-Name: "audio\dts\libdts";        Description: "libdts";                           Components: ffdshow; Flags:           exclusive
-Name: "audio\dts\libavcodec";    Description: "libavcodec";                       Components: ffdshow; Flags: unchecked exclusive
-Name: "audio\eac3";              Description: "E-AC3 (Dolby Digital Plus)";       Components: ffdshow
-Name: "audio\truehd";            Description: "Dolby TrueHD";                     Components: ffdshow
-Name: "audio\vorbis";            Description: "Vorbis";                           Components: ffdshow
-Name: "audio\flac";              Description: "FLAC";                             Components: ffdshow
-Name: "audio\mlp";               Description: "MLP";                              Components: ffdshow
-Name: "audio\lpcm";              Description: "LPCM";                             Components: ffdshow
-Name: "audio\tta";               Description: "True Audio";                       Components: ffdshow
-Name: "audio\amr";               Description: "AMR";                              Components: ffdshow
-Name: "audio\qt";                Description: "QDM2, MACE";                       Components: ffdshow
-Name: "audio\msadpcm";           Description: "MS ADPCM";                         Components: ffdshow; Flags: unchecked
-Name: "audio\imaadpcm";          Description: "IMA ADPCM";                        Components: ffdshow; Flags: unchecked
-Name: "audio\msgsm";             Description: "MS GSM";                           Components: ffdshow; Flags: unchecked
-Name: "audio\law";               Description: "Alaw, u-Law";                      Components: ffdshow; Flags: unchecked
-Name: "audio\truespeech";        Description: "Truespeech";                       Components: ffdshow; Flags: unchecked
-Name: "audio\rawa";              Description: "{cm:tsk_rawAudio}";                Components: ffdshow; Flags: unchecked dontinheritcheck
-Name: "filter";                  Description: "{cm:tsk_filtersSelect}";           Components: ffdshow; Flags: unchecked;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_filters}"
-Name: "filter\passthroughac3";   Description: "{cm:tsk_passthroughac3}";          Components: ffdshow; Flags: unchecked
-Name: "filter\passthroughdts";   Description: "{cm:tsk_passthroughdts}";          Components: ffdshow; Flags: unchecked
-Name: "filter\normalize";        Description: "{cm:tsk_volumeNorm}";              Components: ffdshow; Flags: unchecked
-Name: "filter\subtitles";        Description: "{cm:tsk_subtitles}";               Components: ffdshow; Flags: unchecked
+Name: "video\wvp2";              Description: "WMVP, WVP2";                   Flags: unchecked dontinheritcheck
+Name: "video\mss2";              Description: "MSS1, MSS2";                   Flags: unchecked dontinheritcheck
+Name: "video\dvsd";              Description: "DV";                           Flags: unchecked dontinheritcheck
+Name: "video\techsmith";         Description: "Techsmith";                    Flags: unchecked
+Name: "video\fraps";             Description: "Fraps";                        Flags: unchecked
+Name: "video\msvidc";            Description: "MS Video 1";                   Flags: unchecked
+Name: "video\msrle";             Description: "MS RLE";                       Flags: unchecked
+Name: "video\cinepak";           Description: "Cinepak";                      Flags: unchecked
+Name: "video\mjpeg";             Description: "MJPEG";
+Name: "video\truemotion";        Description: "TrueMotion";
+Name: "video\camstudio";         Description: "Camstudio";
+Name: "video\indeo";             Description: "Indeo 2/3";
+Name: "video\other1";            Description: "Theora, VP3, VP5";
+Name: "video\other2";            Description: "CorePNG, H.261, MSZH, ZLIB";
+Name: "video\other3";            Description: "8BPS, ASV1/2, CYUV, LOCO, QPEG, VCR1, WNV1"; Flags: unchecked
+Name: "video\other4";            Description: "AASC, Ultimotion, VIXL, ZMBV"; Flags: unchecked
+Name: "video\rawv";              Description: "{cm:tsk_rawVideo}";            Flags: unchecked dontinheritcheck
+Name: "audio";                   Description: "{cm:tsk_audioFormatsSelect}";  Flags: unchecked; Components: directshow\audio; Check: NOT IsUpdate; GroupDescription: "{cm:tsk_audioFormats}"
+Name: "audio\mp2";               Description: "MP1, MP2";
+Name: "audio\mp3";               Description: "MP3";
+Name: "audio\aac";               Description: "AAC";
+Name: "audio\ac3";               Description: "AC3";
+Name: "audio\dts";               Description: "DTS";
+Name: "audio\dts\libdts";        Description: "libdts";                       Flags:           exclusive
+Name: "audio\dts\libavcodec";    Description: "libavcodec";                   Flags: unchecked exclusive
+Name: "audio\eac3";              Description: "E-AC3 (Dolby Digital Plus)";
+Name: "audio\truehd";            Description: "Dolby TrueHD";
+Name: "audio\vorbis";            Description: "Vorbis";
+Name: "audio\flac";              Description: "FLAC";
+Name: "audio\mlp";               Description: "MLP";
+Name: "audio\lpcm";              Description: "LPCM";
+Name: "audio\tta";               Description: "True Audio";
+Name: "audio\amr";               Description: "AMR";
+Name: "audio\qt";                Description: "QDM2, MACE";
+Name: "audio\msadpcm";           Description: "MS ADPCM";                     Flags: unchecked
+Name: "audio\imaadpcm";          Description: "IMA ADPCM";                    Flags: unchecked
+Name: "audio\msgsm";             Description: "MS GSM";                       Flags: unchecked
+Name: "audio\law";               Description: "Alaw, u-Law";                  Flags: unchecked
+Name: "audio\truespeech";        Description: "Truespeech";                   Flags: unchecked
+Name: "audio\rawa";              Description: "{cm:tsk_rawAudio}";            Flags: unchecked dontinheritcheck
+Name: "filter";                  Description: "{cm:tsk_filtersSelect}";       Flags: unchecked;                  Components: directshow\video directshow\audio; Check: NOT IsUpdate; GroupDescription: "{cm:tsk_filters}"
+Name: "filter\passthroughac3";   Description: "{cm:tsk_passthroughac3}";      Flags: unchecked;                  Components: directshow\audio
+Name: "filter\passthroughdts";   Description: "{cm:tsk_passthroughdts}";      Flags: unchecked;                  Components: directshow\audio
+Name: "filter\normalize";        Description: "{cm:tsk_volumeNorm}";          Flags: unchecked;                  Components: directshow\audio
+Name: "filter\subtitles";        Description: "{cm:tsk_subtitles}";           Flags: unchecked;                  Components: directshow\video
 #ifndef PREF_YAMAGATA
-Name: "skiph264inloop";          Description: "{cm:tsk_skipInloop}";              Components: ffdshow; Flags: unchecked;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_tweaks}"
+Name: "skiph264inloop";          Description: "{cm:tsk_skipInloop}";          Flags: unchecked;                  Components: directshow\video;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_tweaks}"
 #endif
-Name: "whitelist";               Description: "{cm:tsk_whitelist}";               Components: ffdshow; Flags: unchecked;                  Check: NOT IsUpdate; GroupDescription: "{cm:tsk_compatibilityManager}"
-Name: "whitelist\prompt";        Description: "{cm:tsk_whitelistPrompt}";         Components: ffdshow; Flags: unchecked
+Name: "whitelist";               Description: "{cm:tsk_whitelist}";           Flags: unchecked;                  Components: directshow\video directshow\audio; Check: NOT IsUpdate; GroupDescription: "{cm:tsk_compatibilityManager}"
+Name: "whitelist\prompt";        Description: "{cm:tsk_whitelistPrompt}";     Flags: unchecked
 
 [Icons]
 #if is64bit
-Name: {group}\{cm:shrt_audioConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: ffdshow
-Name: {group}\{cm:shrt_videoConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: ffdshow
-Name: {group}\{cm:shrt_videoDXVAConfig} x64; Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 10; Components: ffdshow\dxva
-Name: {group}\{cm:shrt_vfwConfig} x64;       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: ffdshow\vfw;
+Name: {group}\{cm:shrt_audioConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: directshow\audio
+Name: {group}\{cm:shrt_videoConfig} x64;     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: directshow\video
+Name: {group}\{cm:shrt_videoDXVAConfig} x64; Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 10; Components: directshow\dxva
+Name: {group}\{cm:shrt_vfwConfig} x64;       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: vfw; OnlyBelowVersion: 6.2;
 #else
-Name: {group}\{cm:shrt_audioConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: ffdshow
-Name: {group}\{cm:shrt_videoConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: ffdshow
-Name: {group}\{cm:shrt_videoDXVAConfig}; Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 10; Components: ffdshow\dxva
-Name: {group}\{cm:shrt_vfwConfig};       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: ffdshow\vfw
+Name: {group}\{cm:shrt_audioConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 4;  Components: directshow\audio
+Name: {group}\{cm:shrt_videoConfig};     Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 3;  Components: directshow\video
+Name: {group}\{cm:shrt_videoDXVAConfig}; Filename: {#= ff_sys}\rundll32.exe; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: {app};       IconFilename: {app}\ffdshow.ax; IconIndex: 10; Components: directshow\dxva
+Name: {group}\{cm:shrt_vfwConfig};       Filename: {#= ff_sys}\rundll32.exe; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: {#= ff_sys}; IconFilename: {app}\ffdshow.ax; IconIndex: 5;  Components: vfw
 #endif
 #if include_makeavis
-Name: {group}\makeAVIS; Filename: {app}\makeAVIS.exe; Components: ffdshow\makeavis
+Name: {group}\makeAVIS;            Filename: {app}\makeAVIS.exe; Components: makeavis
 #endif
 Name: {group}\{cm:shrt_uninstall}; Filename: {uninstallexe}
-Name: {group}\{cm:shrt_homepage}; Filename: http://ffdshow-tryout.sourceforge.net/; IconFilename: {app}\ffdshow.ax; IconIndex: 9; Components: ffdshow
+Name: {group}\{cm:shrt_homepage};  Filename: http://ffdshow-tryout.sourceforge.net/; IconFilename: {app}\ffdshow.ax; IconIndex: 9;
 
 [Files]
 ; For speaker config and QuickSync detection
 Source: "ffSpkCfg.dll"; Flags: dontcopy
 
-Source: "{#= bindir}\ffmpeg.dll";                 DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_liba52.dll";              DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_libdts.dll";              DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_libfaad2.dll";            DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_libmad.dll";              DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_unrar.dll";               DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\ff_samplerate.dll";          DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
+Source: "{#= bindir}\ffmpeg.dll";                 DestDir: "{app}";                                                     Flags: ignoreversion
+Source: "{#= bindir}\ff_liba52.dll";              DestDir: "{app}";                       Components: directshow\audio; Flags: ignoreversion
+Source: "{#= bindir}\ff_libdts.dll";              DestDir: "{app}";                       Components: directshow\audio; Flags: ignoreversion
+Source: "{#= bindir}\ff_libfaad2.dll";            DestDir: "{app}";                       Components: directshow\audio; Flags: ignoreversion
+Source: "{#= bindir}\ff_libmad.dll";              DestDir: "{app}";                       Components: directshow\audio; Flags: ignoreversion
+Source: "{#= bindir}\ff_unrar.dll";               DestDir: "{app}";                       Components: directshow\video directshow\videoproc; Flags: ignoreversion
+Source: "{#= bindir}\ff_samplerate.dll";          DestDir: "{app}";                       Components: directshow\audio directshow\audioproc; Flags: ignoreversion
 
 #if include_xvidcore
-Source: "{#= bindir}\xvidcore.dll";               DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
+Source: "{#= bindir}\xvidcore.dll";               DestDir: "{app}";                       Components: directshow\video vfw; Flags: ignoreversion
 #endif
-Source: "{#= bindir}\ff_kernelDeint.dll";         DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion; Check: Is_SSE_Supported;
-Source: "{#= bindir}\TomsMoComp_ff.dll";          DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "{#= bindir}\libmpeg2_ff.dll";            DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\ff_kernelDeint.dll";         DestDir: "{app}";                       Components: directshow\video directshow\videoproc; Flags: ignoreversion; Check: Is_SSE_Supported;
+Source: "{#= bindir}\TomsMoComp_ff.dll";          DestDir: "{app}";                       Components: directshow\video directshow\videoproc; Flags: ignoreversion
+Source: "{#= bindir}\libmpeg2_ff.dll";            DestDir: "{app}";                       Components: directshow\video;                      Flags: ignoreversion restartreplace uninsrestartdelete
 
-#ifdef PREF_CLSID_ICL
-Source: "{#= bindir}\ffdshow_icl.ax";             DestDir: "{app}"; DestName: "ffdshow.ax"; Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete regserver noregerror
-#else
-Source: "{#= bindir}\ffdshow.ax";                 DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete regserver noregerror
-#endif
-Source: "..\manifest\ffdshow.ax.manifest";        DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
+Source: "{#= bindir}\ffdshow.ax";                 DestDir: "{app}";                                                     Flags: ignoreversion restartreplace uninsrestartdelete regserver noregerror
+Source: "..\manifest\ffdshow.ax.manifest";        DestDir: "{app}";                                                     Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
 
-Source: "{#= bindir}\ff_wmv9.dll";                DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
+Source: "{#= bindir}\ff_wmv9.dll";                DestDir: "{app}";                       Components: directshow\video vfw; Flags: ignoreversion
 #if include_quicksync
-Source: "{#= bindir}\IntelQuickSyncDecoder.dll";  DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion; Check: IsQSCapableIntelCPU; MinVersion: 6.0;
+Source: "{#= bindir}\IntelQuickSyncDecoder.dll";  DestDir: "{app}";                       Components: directshow\video vfw; Flags: ignoreversion; Check: IsQSCapableIntelCPU; MinVersion: 6.0;
 #endif
 
-Source: "{#= bindir}\ff_vfw.dll";                 DestDir: "{sys}";                         Components: ffdshow\vfw;                Flags: ignoreversion restartreplace uninsrestartdelete
-Source: "..\manifest\ff_vfw.dll.manifest";        DestDir: "{sys}";                         Components: ffdshow\vfw;                Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
+Source: "{#= bindir}\ff_vfw.dll";                 DestDir: "{sys}";                       Components: vfw;                Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "..\manifest\ff_vfw.dll.manifest";        DestDir: "{sys}";                       Components: vfw;                Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
 
 #if include_plugin_avisynth
-Source: "..\ffavisynth.avsi";                     DestDir: "{code:GetAviSynthPluginDir}";   Components: ffdshow\plugins\avisynth;   Flags: ignoreversion restartreplace uninsrestartdelete
-Source: "{#= bindir}\ffavisynth.dll";             DestDir: "{code:GetAviSynthPluginDir}";   Components: ffdshow\plugins\avisynth;   Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "..\ffavisynth.avsi";                     DestDir: "{code:GetAviSynthPluginDir}"; Components: plugins\avisynth;   Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\ffavisynth.dll";             DestDir: "{code:GetAviSynthPluginDir}"; Components: plugins\avisynth;   Flags: ignoreversion restartreplace uninsrestartdelete
 #endif
 #if include_plugin_virtualdub
-Source: "{#= bindir}\ffvdub.vdf";                 DestDir: "{code:GetVdubPluginDir}";       Components: ffdshow\plugins\virtualdub; Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\ffvdub.vdf";                 DestDir: "{code:GetVdubPluginDir}";     Components: plugins\virtualdub; Flags: ignoreversion restartreplace uninsrestartdelete
 #endif
 #if include_plugin_dscaler
-Source: "{#= bindir}\FLT_ffdshow.dll";            DestDir: "{code:GetDScalerDir|}";         Components: ffdshow\plugins\dscaler;    Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\FLT_ffdshow.dll";            DestDir: "{code:GetDScalerDir|}";       Components: plugins\dscaler;    Flags: ignoreversion restartreplace uninsrestartdelete
 #endif
 
 #if include_makeavis
-Source: "{#= bindir}\makeAVIS.exe";               DestDir: "{app}";                         Components: ffdshow\makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete
-Source: "..\manifest\makeAVIS.exe.manifest";      DestDir: "{app}";                         Components: ffdshow\makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
-Source: "{#= bindir}\ff_acm.acm";                 DestDir: "{sys}";                         Components: ffdshow\makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "{#= bindir}\makeAVIS.exe";               DestDir: "{app}";                       Components: makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete
+Source: "..\manifest\makeAVIS.exe.manifest";      DestDir: "{app}";                       Components: makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete; OnlyBelowVersion: 6.0;
+Source: "{#= bindir}\ff_acm.acm";                 DestDir: "{sys}";                       Components: makeavis;           Flags: ignoreversion restartreplace uninsrestartdelete
 #endif
 
-Source: "..\languages\*.*";                       DestDir: "{app}\languages";               Components: ffdshow;                    Flags: ignoreversion
-Source: "..\openIE.js";                           DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "license\gnu_license.txt";                DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
-Source: "license\Boost_Software_License_1.0.txt"; DestDir: "{app}";                         Components: ffdshow;                    Flags: ignoreversion
+Source: "..\languages\*.*";                       DestDir: "{app}\languages";                                             Flags: ignoreversion
+Source: "..\openIE.js";                           DestDir: "{app}";                                                       Flags: ignoreversion
+Source: "license\gnu_license.txt";                DestDir: "{app}";                                                       Flags: ignoreversion
+Source: "license\Boost_Software_License_1.0.txt"; DestDir: "{app}";                                                       Flags: ignoreversion
 
 [InstallDelete]
 ; Private assemblies
-Type: files; Name: "{app}\msvcr80.dll";                            Components: ffdshow
-Type: files; Name: "{app}\microsoft.vc80.crt.manifest";            Components: ffdshow
-Type: files; Name: "{group}\*.*";                                  Components: ffdshow
+Type: files; Name: "{app}\msvcr80.dll";
+Type: files; Name: "{app}\microsoft.vc80.crt.manifest";
+Type: files; Name: "{group}\*.*";
 ; Files not included in this build
 #if !include_xvidcore
-Type: files; Name: "{app}\xvidcore.dll";                           Components: ffdshow
+Type: files; Name: "{app}\xvidcore.dll";
 #endif
 ; Outdated files
-Type: files; Name: "{app}\languages\ffdshow.1029.cz";              Components: ffdshow
-Type: files; Name: "{app}\languages\ffdshow.1041.jp";              Components: ffdshow
-Type: files; Name: "{app}\languages\ffdshow.1053.se";              Components: ffdshow
-Type: files; Name: "{app}\libavcodec.dll";                         Components: ffdshow
-Type: files; Name: "{app}\libmplayer.dll";                         Components: ffdshow
-Type: files; Name: "{app}\ff_tremor.dll";                          Components: ffdshow
-Type: files; Name: "{app}\ff_x264.dll";                            Components: ffdshow
-Type: files; Name: "{app}\ffmpegmt.dll";                           Components: ffdshow
+Type: files; Name: "{app}\languages\ffdshow.1029.cz";
+Type: files; Name: "{app}\languages\ffdshow.1041.jp";
+Type: files; Name: "{app}\languages\ffdshow.1053.se";
+Type: files; Name: "{app}\libavcodec.dll";
+Type: files; Name: "{app}\libmplayer.dll";
+Type: files; Name: "{app}\ff_tremor.dll";
+Type: files; Name: "{app}\ff_x264.dll";
+Type: files; Name: "{app}\ffmpegmt.dll";
 #if is64bit
-Type: files; Name: "{sys}\ff_vfw.dll";                             Components: ffdshow; MinVersion: 6.2
-Type: files; Name: "{sys}\ff_acm.acm";                             Components: ffdshow; MinVersion: 6.2
+Type: files; Name: "{sys}\ff_vfw.dll"; Components: NOT vfw; MinVersion: 6.2
+Type: files; Name: "{sys}\ff_acm.acm";                      MinVersion: 6.2
 #endif
 
 [Registry]
@@ -456,154 +450,181 @@ Type: files; Name: "{sys}\ff_acm.acm";                             Components: f
 #endif
 
 ; Cleanup of settings
-Root: HKCU; Subkey: "Software\GNU";               Components: ffdshow;     Flags: uninsdeletekeyifempty
-Root: HKCU; Subkey: "{#= ff_reg_base}";           Components: ffdshow;     Flags: uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";     Components: ffdshow;     Flags: uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio_raw"; Components: ffdshow;     Flags: dontcreatekey uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";      Components: ffdshow\dxva; Flags: uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_enc";       Components: ffdshow;     Flags: dontcreatekey uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_raw";       Components: ffdshow;     Flags: dontcreatekey uninsdeletekey
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";       Components: ffdshow\vfw; Flags: uninsdeletekey
-Root: HKLM; Subkey: "Software\GNU";               Components: ffdshow;     Flags: uninsdeletekeyifempty
-Root: HKLM; Subkey: "{#= ff_reg_base}";           Components: ffdshow;     Flags: uninsdeletekey
-Root: HKLM; Subkey: "{#= ff_reg_base}_audio";     Components: ffdshow;     Flags: uninsdeletekey
-Root: HKLM; Subkey: "{#= ff_reg_base}_vfw";       Components: ffdshow\vfw; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\GNU";               Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "{#= ff_reg_base}";           Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";     Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio_raw"; Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";      Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_enc";       Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_raw";       Flags: dontcreatekey uninsdeletekey
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";       Flags: dontcreatekey uninsdeletekey
+Root: HKLM; Subkey: "Software\GNU";               Flags: uninsdeletekeyifempty
+Root: HKLM; Subkey: "{#= ff_reg_base}";           Flags: dontcreatekey uninsdeletekey
+Root: HKLM; Subkey: "{#= ff_reg_base}_audio";     Flags: dontcreatekey uninsdeletekey
+Root: HKLM; Subkey: "{#= ff_reg_base}_vfw";       Flags: dontcreatekey uninsdeletekey
 
 ; Reset settings
-Root: HKCU; Subkey: "{#= ff_reg_base}";           Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";     Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio_raw"; Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";      Components: ffdshow\dxva; Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_enc";       Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_raw";       Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";       Components: ffdshow\vfw; Flags: deletekey; Tasks: resetsettings
-Root: HKLM; Subkey: "{#= ff_reg_base}";           Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKLM; Subkey: "{#= ff_reg_base}_audio";     Components: ffdshow;     Flags: deletekey; Tasks: resetsettings
-Root: HKLM; Subkey: "{#= ff_reg_base}_vfw";       Components: ffdshow\vfw; Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}";           Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";     Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio_raw"; Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";      Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_enc";       Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_raw";       Flags: deletekey; Tasks: resetsettings
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw";       Flags: deletekey; Tasks: resetsettings
+Root: HKLM; Subkey: "{#= ff_reg_base}";           Flags: deletekey; Tasks: resetsettings
+Root: HKLM; Subkey: "{#= ff_reg_base}_audio";     Flags: deletekey; Tasks: resetsettings
+Root: HKLM; Subkey: "{#= ff_reg_base}_vfw";       Flags: deletekey; Tasks: resetsettings
 
 ; Path
-Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pth";           ValueData: "{app}";                                         Components: ffdshow
-Root: HKLM; Subkey: "{#= ff_reg_base}";                    ValueName: "pthPriority";                                                               Components: ffdshow;                    Flags: deletevalue
+Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pth";           ValueData: "{app}";
+Root: HKLM; Subkey: "{#= ff_reg_base}";                    ValueName: "pthPriority";                                                                                               Flags: deletevalue
 #if include_plugin_avisynth
-Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pthAvisynth";   ValueData: "{code:GetAviSynthPluginDir}";                   Components: ffdshow\plugins\avisynth;   Flags: uninsclearvalue
+Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pthAvisynth";   ValueData: "{code:GetAviSynthPluginDir}";                   Components: plugins\avisynth;   Flags: uninsclearvalue
 #endif
 #if include_plugin_virtualdub
-Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pthVirtualDub"; ValueData: "{code:GetVdubPluginDir}";                       Components: ffdshow\plugins\virtualdub; Flags: uninsclearvalue
+Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "pthVirtualDub"; ValueData: "{code:GetVdubPluginDir}";                       Components: plugins\virtualdub; Flags: uninsclearvalue
 #endif
 #if include_plugin_dscaler
-Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "dscalerPth";    ValueData: "{code:GetDScalerDir|}";                         Components: ffdshow\plugins\dscaler;    Flags: uninsclearvalue
+Root: HKLM; SubKey: "{#= ff_reg_base}"; ValueType: string; ValueName: "dscalerPth";    ValueData: "{code:GetDScalerDir|}";                         Components: plugins\dscaler;    Flags: uninsclearvalue
 #endif
 
 ; Version info
-Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: dword;  ValueName: "revision";      ValueData: "{#= SVN_REVISION}";                             Components: ffdshow
-Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: dword;  ValueName: "builddate";     ValueData: "{#= BUILD_YEAR}{#= BUILD_MONTH}{#= BUILD_DAY}"; Components: ffdshow
+Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: dword;  ValueName: "revision";      ValueData: "{#= SVN_REVISION}";
+Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: dword;  ValueName: "builddate";     ValueData: "{#= BUILD_YEAR}{#= BUILD_MONTH}{#= BUILD_DAY}";
 
 ; Language
 #if localize
-Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: string; ValueName: "lang";          ValueData: "{cm:langid}";                                   Components: ffdshow
+Root: HKLM; Subkey: "{#= ff_reg_base}"; ValueType: string; ValueName: "lang";          ValueData: "{cm:langid}";
 #endif
 
 ; Register VfW interface
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";      ValueType: string; ValueName: "ff_vfw.dll";   ValueData: "ffdshow video encoder"; Components: ffdshow\vfw;      Flags: uninsdeletevalue
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";         ValueType: string; ValueName: "VIDC.FFDS";    ValueData: "ff_vfw.dll";            Components: ffdshow\vfw;      Flags: uninsdeletevalue
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";                                                                                    Components: ffdshow\vfw;      Flags: uninsdeletekey
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "Description";  ValueData: "ffdshow video encoder"; Components: ffdshow\vfw;
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "Driver";       ValueData: "ff_vfw.dll";            Components: ffdshow\vfw;
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "FriendlyName"; ValueData: "ffdshow video encoder"; Components: ffdshow\vfw;
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";      ValueType: string; ValueName: "ff_vfw.dll";   ValueData: "ffdshow video encoder"; Components: vfw;      Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";         ValueType: string; ValueName: "VIDC.FFDS";    ValueData: "ff_vfw.dll";            Components: vfw;      Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";                                                                                    Components: vfw;      Flags: uninsdeletekey
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "Description";  ValueData: "ffdshow video encoder"; Components: vfw;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "Driver";       ValueData: "ff_vfw.dll";            Components: vfw;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";  ValueType: string; ValueName: "FriendlyName"; ValueData: "ffdshow video encoder"; Components: vfw;
 
 #if include_makeavis
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";      ValueType: string; ValueName: "ff_acm.acm";   ValueData: "ffdshow ACM codec";     Components: ffdshow\makeavis; Flags: uninsdeletevalue
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";         ValueType: string; ValueName: "msacm.avis";   ValueData: "ff_acm.acm";            Components: ffdshow\makeavis; Flags: uninsdeletevalue
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis";                                                                                   Components: ffdshow\makeavis; Flags: uninsdeletekey
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Description";  ValueData: "ffdshow ACM codec";     Components: ffdshow\makeavis;
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Driver";       ValueData: "ff_acm.acm";            Components: ffdshow\makeavis;
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "FriendlyName"; ValueData: "ffdshow ACM codec";     Components: ffdshow\makeavis;
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";      ValueType: string; ValueName: "ff_acm.acm";   ValueData: "ffdshow ACM codec";     Components: makeavis; Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";         ValueType: string; ValueName: "msacm.avis";   ValueData: "ff_acm.acm";            Components: makeavis; Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis";                                                                                   Components: makeavis; Flags: uninsdeletekey
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Description";  ValueData: "ffdshow ACM codec";     Components: makeavis;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "Driver";       ValueData: "ff_acm.acm";            Components: makeavis;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis"; ValueType: string; ValueName: "FriendlyName"; ValueData: "ffdshow ACM codec";     Components: makeavis;
 #endif
 
 ; Remove old incompatible codecs on Windows 8 x64
 #if is64bit
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_vfw.dll"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "VIDC.FFDS";  Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";                          Flags: deletekey;   Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_vfw.dll"; Flags: deletevalue; Components: NOT vfw; MinVersion: 6.2
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "VIDC.FFDS";  Flags: deletevalue; Components: NOT vfw; MinVersion: 6.2
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\icm\VIDC.FFDS";                          Flags: deletekey;   Components: NOT vfw; MinVersion: 6.2
 
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_acm.acm"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "msacm.avis"; Flags: deletevalue; Components: ffdshow; MinVersion: 6.2
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis";                         Flags: deletekey;   Components: ffdshow; MinVersion: 6.2
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\drivers.desc";     ValueName: "ff_acm.acm"; Flags: deletevalue;
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\Drivers32";        ValueName: "msacm.avis"; Flags: deletevalue;
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\MediaResources\acm\msacm.avis";                         Flags: deletekey;
 #endif
 
 ; Recommended settings
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "postprocH264mode";     ValueData: "0";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "resizeMethod";         ValueData: "9";                  Components: ffdshow;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "postprocH264mode";     ValueData: "0";                  Components: directshow\video;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "resizeMethod";         ValueData: "9";                  Components: directshow\video;     Flags: createvalueifdoesntexist
 
 #ifndef PREF_YAMAGATA
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "fastH264";             ValueData: "2";                  Components: ffdshow; Tasks:     skiph264inloop
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "fastH264";             ValueData: "0";                  Components: ffdshow; Tasks: NOT skiph264inloop;        Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "fastH264";             ValueData: "2";                  Components: directshow\video; Tasks:     skiph264inloop
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "fastH264";             ValueData: "0";                  Components: directshow\video; Tasks: NOT skiph264inloop;        Check: NOT IsUpdate
 #endif
 
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "subTextpin";           ValueData: "1";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "subTextpinSSA";        ValueData: "1";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "subIsExpand";          ValueData: "0";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isSubtitles";          ValueData: "1";                  Components: ffdshow; Tasks:     filter\subtitles
-Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isSubtitles";          ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\subtitles;      Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "subTextpin";           ValueData: "1";                  Components: directshow\video;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "subTextpinSSA";        ValueData: "1";                  Components: directshow\video;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "subIsExpand";          ValueData: "0";                  Components: directshow\video;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isSubtitles";          ValueData: "1";                  Components: directshow\video; Tasks:     filter\subtitles
+Root: HKCU; Subkey: "{#= ff_reg_base}\default";       ValueType: dword;  ValueName: "isSubtitles";          ValueData: "0";                  Components: directshow\video; Tasks: NOT filter\subtitles;      Check: NOT IsUpdate
 
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "mixerNormalizeMatrix"; ValueData: "0";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "isvolume";             ValueData: "1";                  Components: ffdshow; Tasks:     filter\normalize
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "volNormalize";         ValueData: "1";                  Components: ffdshow; Tasks:     filter\normalize
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "volNormalize";         ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\normalize;      Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "mixerNormalizeMatrix"; ValueData: "0";                  Components: directshow\audio;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "isvolume";             ValueData: "1";                  Components: directshow\audio; Tasks:     filter\normalize
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "volNormalize";         ValueData: "1";                  Components: directshow\audio; Tasks:     filter\normalize
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "volNormalize";         ValueData: "0";                  Components: directshow\audio; Tasks: NOT filter\normalize;      Check: NOT IsUpdate
 
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "ismixer";              ValueData: "{code:GetIsMixer}";  Components: ffdshow
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "mixerOut";             ValueData: "{code:GetMixerOut}"; Components: ffdshow
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "ismixer";              ValueData: "{code:GetIsMixer}";  Components: directshow\audio
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "mixerOut";             ValueData: "{code:GetMixerOut}"; Components: directshow\audio
 
 ; Blacklist
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isBlacklist";          ValueData: "1";                  Components: ffdshow;     Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isBlacklist";          ValueData: "1";                  Components: ffdshow;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isBlacklist";          ValueData: "1";                  Components: directshow\video;     Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isBlacklist";          ValueData: "1";                  Components: directshow\audio;     Flags: createvalueifdoesntexist
 
 ; Compatibility list
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: ffdshow; Tasks:     whitelist;
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isWhitelist";          ValueData: "0";                  Components: ffdshow; Tasks: NOT whitelist;             Check: NOT IsUpdate
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: ffdshow; Tasks:     whitelist
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isWhitelist";          ValueData: "0";                  Components: ffdshow; Tasks: NOT whitelist;             Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: directshow\video; Tasks:     whitelist;
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isWhitelist";          ValueData: "0";                  Components: directshow\video; Tasks: NOT whitelist;             Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: directshow\audio; Tasks:     whitelist
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isWhitelist";          ValueData: "0";                  Components: directshow\audio; Tasks: NOT whitelist;             Check: NOT IsUpdate
 
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isCompMgr";            ValueData: "1";                  Components: ffdshow; Tasks: whitelist AND     whitelist\prompt
-Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow; Tasks: whitelist AND NOT whitelist\prompt
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "1";                  Components: ffdshow; Tasks: whitelist AND     whitelist\prompt
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow; Tasks: whitelist AND NOT whitelist\prompt
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isCompMgr";            ValueData: "1";                  Components: directshow\video; Tasks: whitelist AND     whitelist\prompt
+Root: HKCU; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: directshow\video; Tasks: whitelist AND NOT whitelist\prompt
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "1";                  Components: directshow\audio; Tasks: whitelist AND     whitelist\prompt
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio";         ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: directshow\audio; Tasks: whitelist AND NOT whitelist\prompt
 
 ; VFW settings
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "needOutcspsFix";       ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP210";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP216";              ValueData: "0";                  Components: ffdshow\vfw;
-Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outY416";              ValueData: "0";                  Components: ffdshow\vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "needOutcspsFix";       ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outNV12";              ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP010";              ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP016";              ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP210";              ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outP216";              ValueData: "0";                  Components: vfw;
+Root: HKCU; Subkey: "{#= ff_reg_base}_vfw\default";   ValueType: dword;  ValueName: "outY416";              ValueData: "0";                  Components: vfw;
 
-; DXVA registration flag
-Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "0";                  Components: ffdshow\dxva
-Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";        ValueData: "1";                  Components: NOT ffdshow\dxva
+; filter registration flags
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVideoDecoder"; ValueData: "0";                  Components:     directshow\video
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVideoDecoder"; ValueData: "1";                  Components: NOT directshow\video
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noAudioDecoder"; ValueData: "0";                  Components:     directshow\audio
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noAudioDecoder"; ValueData: "1";                  Components: NOT directshow\audio
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";  ValueData: "0";                  Components:     directshow\dxva
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noDxvaDecoder";  ValueData: "1";                  Components: NOT directshow\dxva
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVideoProc";    ValueData: "0";                  Components:     directshow\videoproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVideoProc";    ValueData: "1";                  Components: NOT directshow\videoproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noSubFilter";    ValueData: "0";                  Components:     directshow\videoproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noSubFilter";    ValueData: "1";                  Components: NOT directshow\videoproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noAudioProc";    ValueData: "0";                  Components:     directshow\audioproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noAudioProc";    ValueData: "1";                  Components: NOT directshow\audioproc
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVFW";          ValueData: "0";                  Components:     vfw
+Root: HKLM; Subkey: "{#= ff_reg_base}";               ValueType: dword;  ValueName: "noVFW";          ValueData: "1";                  Components: NOT vfw
 
-; Remove DXVA decoder if unchecked
-Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{0B0EFF97-C750-462C-9488-B10E7D87F1A6}; Flags: deletekey; Components: NOT ffdshow\dxva
+; Remove filters if unchecked
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{04FE9017-F873-410E-871E-AB91661A4EF7}; Flags: deletekey; Components: NOT directshow\video
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{0F40E1E5-4F79-4988-B1A9-CC98794E6B55}; Flags: deletekey; Components: NOT directshow\audio
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{0B0EFF97-C750-462C-9488-B10E7D87F1A6}; Flags: deletekey; Components: NOT directshow\dxva
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{0B390488-D80F-4A68-8408-48DC199F0E97}; Flags: deletekey; Components: NOT directshow\videoproc
+Root: HKCR; Subkey: CLSID\{{083863F1-70DE-11D0-BD40-00A0C911CE86}\Instance\{{B86F6BEE-E7C0-4D03-8D52-5B4430CF6C88}; Flags: deletekey; Components: NOT directshow\audioproc
+
+Root: HKCR; Subkey: CLSID\{{04FE9017-F873-410E-871E-AB91661A4EF7}; Flags: deletekey; Components: NOT directshow\video
+Root: HKCR; Subkey: CLSID\{{9A98ADCC-C6A4-449E-A8B1-0363673D9F8A}; Flags: deletekey; Components: NOT directshow\video
+Root: HKCR; Subkey: CLSID\{{0F40E1E5-4F79-4988-B1A9-CC98794E6B55}; Flags: deletekey; Components: NOT directshow\audio
+Root: HKCR; Subkey: CLSID\{{007FC171-01AA-4B3A-B2DB-062DEE815A1E}; Flags: deletekey; Components: NOT directshow\audio
+Root: HKCR; Subkey: CLSID\{{0B0EFF97-C750-462C-9488-B10E7D87F1A6}; Flags: deletekey; Components: NOT directshow\dxva
+Root: HKCR; Subkey: CLSID\{{545A00C2-FCCC-40B3-9310-2C36AE64B0DD}; Flags: deletekey; Components: NOT directshow\dxva
+Root: HKCR; Subkey: CLSID\{{0B390488-D80F-4A68-8408-48DC199F0E97}; Flags: deletekey; Components: NOT directshow\videoproc
+Root: HKCR; Subkey: CLSID\{{DBF9000E-F08C-4858-B769-C914A0FBB1D7}; Flags: deletekey; Components: NOT directshow\videoproc
+Root: HKCR; Subkey: CLSID\{{B86F6BEE-E7C0-4D03-8D52-5B4430CF6C88}; Flags: deletekey; Components: NOT directshow\audioproc
+Root: HKCR; Subkey: CLSID\{{3E3ECA90-4D6A-4344-98C3-1BB95BF24038}; Flags: deletekey; Components: NOT directshow\audioproc
 
 ; DXVA Compatibility list
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isBlacklist";          ValueData: "0";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: ffdshow\dxva; Flags: createvalueifdoesntexist
-Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: string;  ValueName: "Whitelist";           ValueData: "bsplayer.exe;coreplayer.exe;ehshell.exe;gom.exe;graphedit.exe;graphedt.exe;graphstudio.exe;graphstudio64.exe;graphstudionext.exe;graphstudionext64.exe;kmplayer.exe;mpc-hc.exe;mpc-hc64.exe;mplayerc.exe;wmplayer.exe;zplayer.exe;"; Components: ffdshow\dxva; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isCompMgr";            ValueData: "0";                  Components: directshow\dxva; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isBlacklist";          ValueData: "0";                  Components: directshow\dxva; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: dword;  ValueName: "isWhitelist";          ValueData: "1";                  Components: directshow\dxva; Flags: createvalueifdoesntexist
+Root: HKCU; Subkey: "{#= ff_reg_base}_dxva";          ValueType: string;  ValueName: "Whitelist";           ValueData: "bsplayer.exe;coreplayer.exe;ehshell.exe;gom.exe;graphedit.exe;graphedt.exe;graphstudio.exe;graphstudio64.exe;graphstudionext.exe;graphstudionext64.exe;kmplayer.exe;mpc-hc.exe;mpc-hc64.exe;mplayerc.exe;wmplayer.exe;zplayer.exe;"; Components: directshow\dxva; Flags: createvalueifdoesntexist
 
 ; Registry keys for the audio/video formats:
 #include "reg_formats.iss"
 
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "1";                  Components: ffdshow; Tasks:     filter\passthroughac3
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\passthroughac3; Check: NOT IsUpdate
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "1";                  Components: ffdshow; Tasks:     filter\passthroughdts
-Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "0";                  Components: ffdshow; Tasks: NOT filter\passthroughdts; Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "1";                  Components: directshow\audio; Tasks:     filter\passthroughac3
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughAC3";       ValueData: "0";                  Components: directshow\audio; Tasks: NOT filter\passthroughac3; Check: NOT IsUpdate
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "1";                  Components: directshow\audio; Tasks:     filter\passthroughdts
+Root: HKCU; Subkey: "{#= ff_reg_base}_audio\default"; ValueType: dword;  ValueName: "passthroughDTS";       ValueData: "0";                  Components: directshow\audio; Tasks: NOT filter\passthroughdts; Check: NOT IsUpdate
 
 [Run]
-Description: "{cm:run_audioConfig}";     Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: "{app}";       Components: ffdshow;     Flags: postinstall nowait unchecked
-Description: "{cm:run_videoConfig}";     Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: "{app}";       Components: ffdshow;     Flags: postinstall nowait unchecked
-Description: "{cm:run_videoDXVAConfig}"; Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: "{app}";       Components: ffdshow\dxva; Flags: postinstall nowait unchecked
-Description: "{cm:run_vfwConfig}";       Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: "{#= ff_sys}"; Components: ffdshow\vfw; Flags: postinstall nowait unchecked
+Description: "{cm:run_audioConfig}";     Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configureAudio";     WorkingDir: "{app}";       Components: directshow\audio; Flags: postinstall nowait unchecked
+Description: "{cm:run_videoConfig}";     Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configure";          WorkingDir: "{app}";       Components: directshow\video; Flags: postinstall nowait unchecked
+Description: "{cm:run_videoDXVAConfig}"; Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{app}\ffdshow.ax"",configureDXVA";      WorkingDir: "{app}";       Components: directshow\dxva;  Flags: postinstall nowait unchecked
+Description: "{cm:run_vfwConfig}";       Filename: "{#= ff_sys}\rundll32.exe"; Parameters: """{#= ff_sys}\ff_vfw.dll"",configureVFW"; WorkingDir: "{#= ff_sys}"; Components: vfw;              Flags: postinstall nowait unchecked
 
 ; All custom strings in the installer:
 #include "custom_messages.iss"
@@ -709,7 +730,7 @@ end;
 function InitializeSetup(): Boolean;
 begin
   Result := True;
-  
+
   // CPU capabilities
   DetectCPU;
 
@@ -743,6 +764,17 @@ begin
       RegWriteDwordValue(HKCU, '{#= ff_reg_base}\default', 'threadsnum', GetNumberOfCores);
     end
   end
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+begin
+  Result := True;
+  if CurPageID = wpSelectComponents then begin
+    if NOT WizardSilent AND (WizardSelectedComponents(False) = '') then begin
+      msgbox(ExpandConstant('{cm:comp_msg_selectOneComp}'), mbError, mb_ok);
+      Result := False;
+    end;
+  end;
 end;
 
 function InitializeUninstall(): Boolean;
@@ -960,7 +992,7 @@ begin
 
   #if include_plugin_virtualdub
   if PageID = VdubDirPage.ID then begin
-    if IsComponentSelected('ffdshow\plugins\virtualdub') then begin
+    if IsComponentSelected('plugins\virtualdub') then begin
       if VdubDirPage.Values[0] = '' then begin
         if RegQueryStringValue(HKLM, '{#= ff_reg_base}', 'pthVirtualDub', regval)
         and not (regval = ExpandConstant('{app}')) and not (regval = '') then
