@@ -63,7 +63,7 @@ STDMETHODIMP TffdshowDec::NonDelegatingQueryInterface(REFIID riid, void **ppv)
         return GetInterface<IffdshowDecW>(getDecInterface<IffdshowDecW>(), ppv);
     } else if (riid == IID_ISpecifyPropertyPages) {
         return GetInterface<ISpecifyPropertyPages>(this, ppv);
-    } else if (riid == IID_IAMStreamSelect) {
+    } else if (riid == IID_IAMStreamSelect && isStreamsMenu()) {
         return GetInterface<IAMStreamSelect>(this, ppv);
     } else if (riid == IID_IffdshowParamsEnum) {
         return GetInterface<IffdshowParamsEnum>(this, ppv);
@@ -867,10 +867,11 @@ STDMETHODIMP TffdshowDec::Count(DWORD* pcStreams)
         delete *s;
     }
     streams.clear();
-    Ttranslate *tr;
-    getTranslator(&tr);
 
     if (isStreamsMenu()) {
+        Ttranslate *tr;
+        getTranslator(&tr);
+        
         for (unsigned int i = 0; i < presets->size(); i++) {
             streams.push_back(new TstreamPreset(this, -200 + i, 0, (*presets)[i]->presetName));
         }
@@ -896,8 +897,9 @@ STDMETHODIMP TffdshowDec::Count(DWORD* pcStreams)
         }
         addOwnStreams();
         *pcStreams = (DWORD)streams.size();
+        
+        tr->release();
     }
-    tr->release();
 
     // Now the subtitles streams
     // Subtitle files
