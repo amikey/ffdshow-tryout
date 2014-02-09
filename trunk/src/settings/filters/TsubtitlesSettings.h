@@ -55,6 +55,7 @@ public:
     int SSAMaintainInside;
     int SSAUseMovieDimensions;
     int pgs;
+    int subPinAlways;
     int isSubFiles;
     int isSubText;
     static const int delayDef = 0, speedDef = 1000;

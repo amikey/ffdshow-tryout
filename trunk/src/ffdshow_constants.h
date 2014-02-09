@@ -502,6 +502,7 @@
 #define IDFF_subMinDurationLine      843
 #define IDFF_subMinDurationChar      844
 #define IDFF_subTextpin              845
+#define IDFF_subPinAlways            863
 #define IDFF_subSSA                  861
 #define IDFF_subPGS                  3545 // Enable bluray subtitles
 #define IDFF_subFiles                3546 // Enable subtitle files
