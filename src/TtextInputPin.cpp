@@ -50,14 +50,14 @@ TtextInputPin::~TtextInputPin()
 HRESULT TtextInputPin::CheckMediaType(const CMediaType *mtIn)
 {
     /* Return S_OK (accept the subtitles connection) if:
-     * 1) Subtitle filter is enabled (IDFF_isSubtitles), embedded subtitles are enabled (IDFF_subTextpin), and the given subtitle format is enabled.
+     * 1) Subtitle pin is enabled (IDFF_isSubtitles or IDFF_subPinAlways), embedded subtitles are enabled (IDFF_subTextpin), and the given subtitle format is enabled.
      *    (IDFF_subText for text, IDFF_subVobsub for VobSub subs, IDFF_subSSA for SSA subs, IDFF_subPGS for Blu-ray subs)
      * 2) subtitles are DVD subpictures, and ffdshow is set as decoder for MPEG-2 or raw video
      *
      * FIXME: accept subtitle pin connection only when ffdshow is decoding/processing video
      */
     if (mtIn->majortype == MEDIATYPE_Subtitle) {
-        if (filter->getParam2(IDFF_isSubtitles) && filter->getParam2(IDFF_subTextpin)) {
+        if (filter->getParam2(IDFF_subTextpin) && (filter->getParam2(IDFF_isSubtitles) || filter->getParam2(IDFF_subPinAlways)) ) {
             if ((mtIn->subtype == MEDIASUBTYPE_SSA || mtIn->subtype == MEDIASUBTYPE_ASS || mtIn->subtype == MEDIASUBTYPE_ASS2) && filter->getParam2(IDFF_subSSA)) {
                 return S_OK;    // SSA/ASS/ASS2 subtitles
             } else if (mtIn->subtype == MEDIASUBTYPE_UTF8 && filter->getParam2(IDFF_subText)) {
@@ -73,7 +73,7 @@ HRESULT TtextInputPin::CheckMediaType(const CMediaType *mtIn)
             }
         }
     } else if (mtIn->majortype == MEDIATYPE_Text) {
-        if (filter->getParam2(IDFF_isSubtitles) && filter->getParam2(IDFF_subTextpin) && filter->getParam2(IDFF_subText)) {
+        if (filter->getParam2(IDFF_subTextpin) && (filter->getParam2(IDFF_isSubtitles) || filter->getParam2(IDFF_subPinAlways)) && filter->getParam2(IDFF_subText)) {
             return S_OK;    // Plain text subtitles
         }  
     } else if ((mtIn->majortype == MEDIATYPE_DVD_ENCRYPTED_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PACK || mtIn->majortype == MEDIATYPE_MPEG2_PES || mtIn->majortype == MEDIATYPE_Video || mtIn->majortype == MEDIATYPE_Stream)

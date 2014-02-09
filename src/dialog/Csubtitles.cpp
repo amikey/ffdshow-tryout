@@ -42,15 +42,15 @@ void TsubtitlesPage::cfg2dlg(void)
     enable(filterMode & IDFF_FILTERMODE_PLAYER, IDC_BT_SUBTITLES_RESET);
     setCheck(IDC_CHB_SUB_WATCH, cfgGet(IDFF_subWatch));
     setCheck(IDC_CHB_SUB_EMBEDDED_PRIORITY, cfgGet(IDFF_subEmbeddedPriority));
-    static const int idEmbedd[] = {IDC_CHB_SUBTEXTPIN, IDC_CHB_SUBCC, IDC_CHB_SUBTEXT_SSA, IDC_CHB_VOBSUB, IDC_CHB_BLURAY, 0};
     setCheck(IDC_CHB_SUBTEXTPIN, cfgGet(IDFF_subTextpin));
     setCheck(IDC_CHB_SUBCC, cfgGet(IDFF_subCC));
     setCheck(IDC_CHB_SUBTEXT_SSA, cfgGet(IDFF_subSSA));
     setCheck(IDC_CHB_VOBSUB, cfgGet(IDFF_subVobsub));
     setCheck(IDC_CHB_BLURAY, cfgGet(IDFF_subPGS));
     setCheck(IDC_CHB_SUBTEXT, cfgGet(IDFF_subText));
+    setCheck(IDC_CHB_SUBPINALWAYS, cfgGet(IDFF_subPinAlways));
     setCheck(IDC_CHB_SUBTITLES_FILES, cfgGet(IDFF_subFiles));
-    //enable(getCheck(IDC_CHB_SUBTEXTPIN), idEmbedded, FALSE);
+    static const int idEmbedd[] = {IDC_CHB_SUBTEXTPIN, IDC_CHB_SUBTEXT, IDC_CHB_SUBCC, IDC_CHB_SUBTEXT_SSA, IDC_CHB_VOBSUB, IDC_CHB_BLURAY, IDC_CHB_SUBPINALWAYS, 0};
     enable((filterMode & IDFF_FILTERMODE_VFW) == 0, idEmbedd);
 }
 void TsubtitlesPage::sub2dlg(void)
@@ -230,6 +230,7 @@ TsubtitlesPage::TsubtitlesPage(TffdshowPageDec *Iparent, const TfilterIDFF *idff
         IDC_CHB_SUBTEXTPIN, IDFF_subTextpin, NULL,
         IDC_CHB_SUB_SEARCHHEURISTIC, IDFF_subSearchHeuristic, &TsubtitlesPage::auto2dlg,
         IDC_CHB_SUBCC, IDFF_subCC, &TsubtitlesPage::cfg2dlg,
+        IDC_CHB_SUBPINALWAYS, IDFF_subPinAlways, NULL,
         IDC_CHB_SUBTEXT_SSA, IDFF_subSSA, NULL,
         IDC_CHB_VOBSUB, IDFF_subVobsub, NULL,
         IDC_CHB_BLURAY, IDFF_subPGS, NULL,

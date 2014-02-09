@@ -694,6 +694,8 @@ TsubtitlesSettings::TsubtitlesSettings(TintStrColl *Icoll, TfilterIDFFs *filters
         _l("subFiles"), 1,
         IDFF_subText                 , &TsubtitlesSettings::isSubText              , 0, 0, _l(""), 1,
         _l("subText"), 1,
+        IDFF_subPinAlways            , &TsubtitlesSettings::subPinAlways           , 0, 0, _l(""), 1,
+        _l("subPinAlways"), 0,
         0
     };
     addOptions(iopts);
