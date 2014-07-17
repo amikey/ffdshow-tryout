@@ -42,7 +42,7 @@ static void calcGamma(int &oldGamma, int newGamma, unsigned int tab[256], unsign
 TimgFilterLuma::TimgFilterLuma(IffdshowBase *Ideci, Tfilters *Iparent): TimgFilter(Ideci, Iparent)
 {
     oldGamma = -1;
-    if (Tconfig::cpu_flags & FF_CPU_SSE2) {
+    if (0 && Tconfig::cpu_flags & FF_CPU_SSE2) { // FIXME: doesn't work if video height is less than MOD4
         processLumaFc = &TimgFilterLuma::processLuma<Tsse2>;
     } else {
         processLumaFc = &TimgFilterLuma::processLuma<Tmmx>;
