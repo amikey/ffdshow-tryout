@@ -1271,8 +1271,8 @@ INIT_XMM sse2
     psrlw    m3, 8
     por      m2, m0
     por      m3, m1
-    mova     [r0 +  0], m2
-    mova     [r0 + 16], m3
+    mov%1    [r0 +  0], m2
+    mov%1    [r0 + 16], m3
     add      r1, 32
     add      r0, 32
     dec      r2
@@ -1288,7 +1288,7 @@ INIT_XMM sse2
     psllw    m0, 8
     psrlw    m2, 8
     por      m2, m0
-    mova     [r0], m2
+    mov%1    [r0], m2
     add      r1, 16
     add      r0, 16
 %endmacro
@@ -1296,6 +1296,7 @@ INIT_XMM sse2
 ; void bswap_buf(uint32_t *dst, const uint32_t *src, int w);
 cglobal bswap32_buf, 3,4,5
     mov      r3, r1
+	or		 r3, r0
     and      r3, 15
     jz       .start_align
     BSWAP_LOOPS_SSE2  u
@@ -1326,8 +1327,8 @@ cglobal bswap32_buf, 3,4,5
     mov%1    m1, [r1 + 16]
     pshufb   m0, m2
     pshufb   m1, m2
-    mova     [r0 +  0], m0
-    mova     [r0 + 16], m1
+    mov%1    [r0 +  0], m0
+    mov%1    [r0 + 16], m1
     add      r0, 32
     add      r1, 32
     dec      r2
@@ -1338,7 +1339,7 @@ cglobal bswap32_buf, 3,4,5
     jz       .left2
     mov%1    m0, [r1]
     pshufb   m0, m2
-    mova     [r0], m0
+    mov%1    [r0], m0
     add      r1, 16
     add      r0, 16
 %endmacro
@@ -1348,6 +1349,7 @@ INIT_XMM ssse3
 cglobal bswap32_buf, 3,4,3
     mov      r3, r1
     mova     m2, [pb_bswap32]
+	or		 r3, r0
     and      r3, 15
     jz       .start_align
     BSWAP_LOOPS_SSSE3  u
