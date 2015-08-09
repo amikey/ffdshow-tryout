@@ -158,7 +158,10 @@ protected:
         }
     };
     IScriptEnvironment* CreateScriptEnvironment(int version=AVISYNTH_INTERFACE_VERSION) {
+      if(ok)
         return new IScriptEnvironment(this,avs_create_script_environment(version));
+      else
+        return NULL;
     }
 
     struct VideoInfo :protected AVS_VideoInfo {

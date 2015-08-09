@@ -1279,7 +1279,9 @@ HRESULT TimgFilterAvisynth::process(TfilterQueue::iterator it,TffPict &pict,cons
                         avisynth=new Tavisynth;
                     }
 
-                    avisynth->init(oldcfg,input,&outcsp,pict);
+                    if (avisynth) {
+                      avisynth->init(oldcfg,input,&outcsp,pict);
+                    }
                 } catch (Tavisynth::AvisynthError &err) {
                     deciV->shortOSDmessage(text<char_t>(err.msg),100);
                     DPRINTFA("%s",err.msg);
