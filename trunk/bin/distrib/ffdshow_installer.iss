@@ -256,7 +256,7 @@ Name: "plugins\dscaler";      Description: "DScaler";
   #endif
 #endif
 #if include_makeavis
-Name: "makeavis";             Description: "{cm:comp_makeAvis}";
+Name: "makeavis";             Description: "{cm:comp_makeAvis}"; OnlyBelowVersion: 6.2;
 #endif
 
 [Tasks]
